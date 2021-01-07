@@ -16,14 +16,12 @@ public class EarthMotionComponent extends Component {
     }
 
     @Override
-    public void initialize() {
+    public void onInitialize() {
 
     }
 
     @Override
     public void onEnable() {
-        Quaternion q = new Quaternion().fromAngles(-FastMath.HALF_PI,0,0);
-        spatial.setLocalRotation(q);
     }
 
     @Override

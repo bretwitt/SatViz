@@ -9,8 +9,8 @@ import java.util.List;
 
 public abstract class Entity {
 
-    List<Component> componentList;
-    SatViz satViz;
+    private List<Component> componentList;
+    private SatViz satViz;
 
     public Entity(List<Component> components, SatViz satViz) {
         componentList = components;
@@ -22,10 +22,6 @@ public abstract class Entity {
         componentList = new ArrayList<>();
     }
 
-    public void setComponentList(List<Component> c) {
-        componentList = c;
-    }
-
     public void addComponent(Component c){
         componentList.add(c);
     }
@@ -34,15 +30,24 @@ public abstract class Entity {
         return satViz;
     }
 
-    public void onInitialize() {
-        componentList.forEach(Component::initialize);
+    public void onStateInitialize() {
+        onEntityInitialize();
+        componentList.forEach(Component::onInitialize);
     }
-
-    public void onEnable() {
+    public void onStateEnable() {
+        onEntityEnable();
         componentList.forEach(Component::onEnable);
     }
-    public void onDisable() {
+    public void onStateDisable() {
+        onEntityDisable();
         componentList.forEach(Component::onDisable);
     }
-    public void onUpdate(float tpf) { componentList.forEach(c -> c.update(tpf)); }
+    public void onStateUpdate(float tpf) {
+        onEntityUpdate();
+        componentList.forEach(c -> c.update(tpf));
+    }
+    public void onEntityInitialize() { }
+    public void onEntityEnable() { }
+    public void onEntityDisable() { }
+    public void onEntityUpdate() { }
 }

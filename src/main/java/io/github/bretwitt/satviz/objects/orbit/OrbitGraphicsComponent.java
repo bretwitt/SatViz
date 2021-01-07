@@ -27,13 +27,22 @@
     }
 
     @Override
-    public void initialize() {
-
+    public void onInitialize() {
     }
 
     @Override
     public void onEnable() {
         updateSpatial(generateOrbitalSpatial(coe));
+    }
+
+    @Override
+    public void update(float tpf) {
+
+    }
+
+    @Override
+    public void onDisable() {
+        updateSpatial(null);
     }
 
     private Spatial generateOrbitalSpatial(ClassicalOrbitalElements coe) {
@@ -86,14 +95,4 @@
         }
         return indexBuffer;
     }
-
-    @Override
-    public void update(float tpf) {
-
-    }
-
-    @Override
-    public void onDisable() {
-
-    }
-    }
+}

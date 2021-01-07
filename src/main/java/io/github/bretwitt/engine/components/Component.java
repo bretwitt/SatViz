@@ -14,7 +14,7 @@ public abstract class Component {
         return satViz;
     }
 
-    public abstract void initialize();
+    public abstract void onInitialize();
     public abstract void onEnable();
     public abstract void update(float tpf);
     public abstract void onDisable();

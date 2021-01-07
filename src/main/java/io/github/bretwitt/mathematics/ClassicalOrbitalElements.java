@@ -8,7 +8,7 @@ public class ClassicalOrbitalElements {
     }
 
     public float getP() {
-        return 2.0f;
+        return 3f;
     }
 
     public float getE() {

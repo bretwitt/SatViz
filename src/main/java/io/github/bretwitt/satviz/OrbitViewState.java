@@ -24,7 +24,6 @@ public class OrbitViewState extends AppState {
 
     @Override
     public void stateUpdate(float tpf) {
-
     }
 
     @Override

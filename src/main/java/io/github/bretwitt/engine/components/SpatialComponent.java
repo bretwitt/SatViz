@@ -14,13 +14,13 @@ public class SpatialComponent extends BaseSpatialComponent {
         super(app);
     }
 
-    public Spatial getSpatial() {
-        return spatial;
+    @Override
+    public void onInitialize() {
+
     }
 
-    @Override
-    public void initialize() {
-
+    public Spatial getSpatial() {
+        return spatial;
     }
 
     @Override

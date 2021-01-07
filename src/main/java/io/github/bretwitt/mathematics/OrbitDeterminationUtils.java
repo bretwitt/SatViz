@@ -9,11 +9,11 @@ public class OrbitDeterminationUtils {
     public static Vector3f[] getOrbitPointsCartesianGeocentric(ClassicalOrbitalElements coe, int points) {
         Vector3f[] orbitPoints = getOrbitPointsCartesianPerifocal(coe, points);
         for(int i = 0; i < points; i++) {
-            Matrix3f rotMatrixInclination = getYRotationMatrix(coe.getI());
-            Matrix3f rotMatrixRAAN = getZRotationMatrix(coe.getRAAN());
+            Matrix3f rotMatrixInclination = getXRotationMatrix(coe.getI());
+            //Matrix3f rotMatrixRAAN = getZRotationMatrix(coe.getRAAN());
 
             orbitPoints[i] = rotMatrixInclination.mult(orbitPoints[i]);
-            orbitPoints[i] = rotMatrixRAAN.mult(orbitPoints[i]);
+            //orbitPoints[i] = rotMatrixRAAN.mult(orbitPoints[i]);
         }
         return orbitPoints;
     }
@@ -50,4 +50,12 @@ public class OrbitDeterminationUtils {
         );
     }
 
+    public static Matrix3f getXRotationMatrix(float theta) {
+        return new Matrix3f(
+                1, 0, 0,
+                0, FastMath.cos(theta), -FastMath.sin(theta),
+                0, FastMath.sin(theta), FastMath.cos(theta)
+        );
+
+    }
 }

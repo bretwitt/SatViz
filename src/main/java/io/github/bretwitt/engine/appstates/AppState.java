@@ -2,6 +2,7 @@ package io.github.bretwitt.engine.appstates;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.entities.Entity;
 
 import java.util.ArrayList;
@@ -11,10 +12,13 @@ public abstract class AppState extends BaseAppState {
 
 
     List<Entity> stateEntities = new ArrayList<>();
+    SatViz satViz;
 
     @Override
     protected void initialize(Application app) {
+        satViz = (SatViz) app;
         initializeState();
+        stateEntities.forEach(Entity::onStateInitialize);
     }
 
     protected void addEntity(Entity e) {
@@ -28,20 +32,20 @@ public abstract class AppState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-        stateEntities.forEach(Entity::onEnable);
         onStateEnable();
+        stateEntities.forEach(Entity::onStateEnable);
     }
 
     @Override
     protected void onDisable() {
-        stateEntities.forEach(Entity::onDisable);
         onStateDisable();
+        stateEntities.forEach(Entity::onStateDisable);
     }
 
     @Override
     public void update(float tpf) {
-        stateEntities.forEach(e -> e.onUpdate(tpf));
         stateUpdate(tpf);
+        stateEntities.forEach(e -> e.onStateUpdate(tpf));
     }
 
     protected abstract void initializeState();

@@ -1,5 +1,6 @@
 package io.github.bretwitt.engine.entities;
 
+import com.google.common.eventbus.EventBus;
 import com.jme3.app.Application;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.components.Component;
@@ -11,15 +12,18 @@ public abstract class Entity {
 
     private List<Component> componentList;
     private SatViz satViz;
+    private EventBus eventBus;
 
     public Entity(List<Component> components, SatViz satViz) {
         componentList = components;
         this.satViz = satViz;
+        eventBus = new EventBus();
     }
 
     public Entity(SatViz satViz) {
         this.satViz = satViz;
         componentList = new ArrayList<>();
+        eventBus = new EventBus();
     }
 
     public void addComponent(Component c){
@@ -28,6 +32,10 @@ public abstract class Entity {
 
     public SatViz getSatViz() {
         return satViz;
+    }
+
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
     public void onStateInitialize() {

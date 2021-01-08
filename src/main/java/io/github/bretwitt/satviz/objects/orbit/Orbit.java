@@ -10,17 +10,16 @@ import io.github.bretwitt.mathematics.ClassicalOrbitalElements;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 public class Orbit extends Entity {
 
     ClassicalOrbitalElements orbitalElements;
-    EventBus eventBus;
 
     public OrbitGraphicsComponent graphicsComponent;
 
     public Orbit(ClassicalOrbitalElements coe, SatViz satViz) {
         super(satViz);
         orbitalElements = coe;
-        eventBus = new EventBus();
     }
 
     public Orbit(ClassicalOrbitalElements coe, List<Component> components, SatViz satViz) {
@@ -29,15 +28,13 @@ public class Orbit extends Entity {
     }
 
     public void onEntityInitialize() {
-        graphicsComponent = new OrbitGraphicsComponent(orbitalElements, getSatViz());
+        graphicsComponent = new OrbitGraphicsComponent(orbitalElements, getEventBus(), getSatViz());
         addComponent(graphicsComponent);
-
-        eventBus.register(graphicsComponent);
     }
 
     public void updateOrbit(ClassicalOrbitalElements coe) {
         orbitalElements = coe;
-        eventBus.post(new OnOrbitUpdateEvent(coe));
+        getEventBus().post(new OnOrbitUpdateEvent(coe));
     }
 
     public void onEntityUpdate(float tpf) {

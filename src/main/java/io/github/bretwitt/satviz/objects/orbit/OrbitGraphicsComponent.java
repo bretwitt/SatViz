@@ -1,5 +1,6 @@
     package io.github.bretwitt.satviz.objects.orbit;
 
+    import com.google.common.eventbus.EventBus;
     import com.google.common.eventbus.Subscribe;
     import com.jme3.app.Application;
     import com.jme3.material.Material;
@@ -18,12 +19,13 @@
 
     import java.nio.FloatBuffer;
 
+    @SuppressWarnings("UnstableApiUsage")
     public class OrbitGraphicsComponent extends BaseSpatialComponent {
 
     private ClassicalOrbitalElements coe;
 
-    public OrbitGraphicsComponent(ClassicalOrbitalElements coe, Application app) {
-        super((SatViz) app);
+    public OrbitGraphicsComponent(ClassicalOrbitalElements coe, EventBus eventBus, Application app) {
+        super(eventBus, (SatViz) app);
         this.coe = coe;
     }
 
@@ -34,6 +36,7 @@
     @Override
     public void onEnable() {
         refreshOrbitSpatial();
+        getEventBus().register(this);
     }
 
     @Override
@@ -41,12 +44,10 @@
 
     }
 
-
     @Subscribe
     public void onOrbitUpdateEvent(OnOrbitUpdateEvent event) {
-        updateOrbit((ClassicalOrbitalElements)event.data);
+        updateOrbit((ClassicalOrbitalElements)event.getData());
     }
-
 
     public void updateOrbit(ClassicalOrbitalElements coe) {
         this.coe = coe;
@@ -60,6 +61,7 @@
     @Override
     public void onDisable() {
         updateSpatial(null);
+        getEventBus().unregister(this);
     }
 
     private Spatial generateOrbitalSpatial(ClassicalOrbitalElements coe) {

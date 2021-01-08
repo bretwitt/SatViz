@@ -12,7 +12,7 @@ public class OrbitViewState extends AppState {
     public void initializeState() {
         SatViz satViz = (SatViz) getApplication();
         Earth earth = new Earth(satViz);
-        Orbit orbit = new Orbit(new ClassicalOrbitalElements(), satViz);
+        Orbit orbit = new Orbit(new ClassicalOrbitalElements(3,0,0,0), satViz);
 
         addEntity(orbit);
         addEntity(earth);

@@ -2,25 +2,48 @@ package io.github.bretwitt.mathematics;
 
 public class ClassicalOrbitalElements {
 
+    float p;
+    float e;
+    float i;
+    float raan;
 
-    public ClassicalOrbitalElements(){
+    public ClassicalOrbitalElements(float p, float e, float i, float raan){
+        this.p = p;
+        this.e = e;
+        this.i = i;
+        this.raan = raan;
+    }
 
+    public void setP(float p) {
+        this.p = p;
+    }
+
+    public void setE(float e) {
+        this.e = e;
+    }
+
+    public void setI(float i) {
+        this.i = i;
+    }
+
+    public void setRaan(float raan) {
+        this.raan = raan;
     }
 
     public float getP() {
-        return 3f;
+        return p;
     }
 
     public float getE() {
-        return 0.0f;
+        return e;
     }
 
     public float getI() {
-        return (float)Math.toRadians(0);
+        return i;
     }
 
     public float getRAAN() {
-        return (float)Math.toRadians(0);
+        return raan;
     }
 
 }

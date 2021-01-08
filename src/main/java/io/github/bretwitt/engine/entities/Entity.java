@@ -43,11 +43,11 @@ public abstract class Entity {
         componentList.forEach(Component::onDisable);
     }
     public void onStateUpdate(float tpf) {
-        onEntityUpdate();
+        onEntityUpdate(tpf);
         componentList.forEach(c -> c.update(tpf));
     }
     public void onEntityInitialize() { }
     public void onEntityEnable() { }
     public void onEntityDisable() { }
-    public void onEntityUpdate() { }
+    public void onEntityUpdate(float tpf) { }
 }

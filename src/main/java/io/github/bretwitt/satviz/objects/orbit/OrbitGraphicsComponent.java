@@ -1,5 +1,6 @@
     package io.github.bretwitt.satviz.objects.orbit;
 
+    import com.google.common.eventbus.Subscribe;
     import com.jme3.app.Application;
     import com.jme3.material.Material;
     import com.jme3.math.ColorRGBA;
@@ -32,12 +33,28 @@
 
     @Override
     public void onEnable() {
-        updateSpatial(generateOrbitalSpatial(coe));
+        refreshOrbitSpatial();
     }
 
     @Override
     public void update(float tpf) {
 
+    }
+
+
+    @Subscribe
+    public void onOrbitUpdateEvent(OnOrbitUpdateEvent event) {
+        updateOrbit((ClassicalOrbitalElements)event.data);
+    }
+
+
+    public void updateOrbit(ClassicalOrbitalElements coe) {
+        this.coe = coe;
+        refreshOrbitSpatial();
+    }
+
+    private void refreshOrbitSpatial() {
+        updateSpatial(generateOrbitalSpatial(coe));;
     }
 
     @Override

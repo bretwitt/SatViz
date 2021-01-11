@@ -5,6 +5,7 @@ import com.jme3.app.Application;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import io.github.bretwitt.SatViz;
+import io.github.bretwitt.satviz.objects.satellite.OnSpatialUpdateEvent;
 
 public abstract class BaseSpatialComponent extends Component {
 
@@ -24,6 +25,11 @@ public abstract class BaseSpatialComponent extends Component {
             rootNode.attachChild(spatial);
         }
         this.spatial = spatial;
+        getEventBus().post(new OnSpatialUpdateEvent(spatial));
+    }
+
+    public Spatial getSpatial() {
+        return spatial;
     }
 
 }

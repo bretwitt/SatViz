@@ -1,11 +1,10 @@
-    package io.github.bretwitt.satviz.objects.orbit;
+    package io.github.bretwitt.satviz.objects.satellite;
 
     import com.google.common.eventbus.EventBus;
     import com.google.common.eventbus.Subscribe;
     import com.jme3.app.Application;
     import com.jme3.material.Material;
     import com.jme3.math.ColorRGBA;
-    import com.jme3.math.FastMath;
     import com.jme3.math.Vector3f;
     import com.jme3.scene.Geometry;
     import com.jme3.scene.Mesh;
@@ -13,20 +12,17 @@
     import com.jme3.scene.VertexBuffer;
     import io.github.bretwitt.SatViz;
     import io.github.bretwitt.engine.components.BaseSpatialComponent;
-    import io.github.bretwitt.engine.components.SpatialComponent;
     import io.github.bretwitt.mathematics.ClassicalOrbitalElements;
     import io.github.bretwitt.mathematics.OrbitDeterminationUtils;
 
-    import java.nio.FloatBuffer;
-
     @SuppressWarnings("UnstableApiUsage")
-    public class OrbitGraphicsComponent extends BaseSpatialComponent {
+    public class SatelliteOrbitGraphicsComponent extends BaseSpatialComponent {
 
-    private ClassicalOrbitalElements coe;
+    private Orbit orbit;
 
-    public OrbitGraphicsComponent(ClassicalOrbitalElements coe, EventBus eventBus, Application app) {
+    public SatelliteOrbitGraphicsComponent(Orbit orbit, EventBus eventBus, Application app) {
         super(eventBus, (SatViz) app);
-        this.coe = coe;
+        this.orbit = orbit;
     }
 
     @Override
@@ -36,7 +32,6 @@
     @Override
     public void onEnable() {
         refreshOrbitSpatial();
-        getEventBus().register(this);
     }
 
     @Override
@@ -46,16 +41,16 @@
 
     @Subscribe
     public void onOrbitUpdateEvent(OnOrbitUpdateEvent event) {
-        updateOrbit((ClassicalOrbitalElements)event.getData());
+        updateOrbit((Orbit)event.getData());
     }
 
-    public void updateOrbit(ClassicalOrbitalElements coe) {
-        this.coe = coe;
+    public void updateOrbit(Orbit orbit) {
+        this.orbit = orbit;
         refreshOrbitSpatial();
     }
 
     private void refreshOrbitSpatial() {
-        updateSpatial(generateOrbitalSpatial(coe));;
+        updateSpatial(generateOrbitalSpatial(orbit));;
     }
 
     @Override
@@ -64,9 +59,9 @@
         getEventBus().unregister(this);
     }
 
-    private Spatial generateOrbitalSpatial(ClassicalOrbitalElements coe) {
-        int samples = 100;
-        Vector3f[] points = OrbitDeterminationUtils.getOrbitPointsCartesianGeocentric(coe,samples);
+    private Spatial generateOrbitalSpatial(Orbit orbit) {
+        int samples = orbit.getSample();
+        Vector3f[] points = orbit.getGeocentricCoordinates();
 
         float[] vertexBuffer = generateVertexBufferFromPoints(points,samples);
         short[] indexBuffer = generateCircularIndexBuffer(samples);

@@ -7,10 +7,12 @@ public abstract class Component {
 
     private SatViz satViz;
     private EventBus eventBus;
+    private EventBus stateEventBus;
 
     public Component(EventBus eventBus, SatViz satViz) {
         this.satViz = satViz;
         this.eventBus = eventBus;
+        eventBus.register(this);
     }
 
     public SatViz getSatViz() {

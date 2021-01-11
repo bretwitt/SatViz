@@ -1,5 +1,6 @@
 package io.github.bretwitt.engine.appstates;
 
+import com.google.common.eventbus.EventBus;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import io.github.bretwitt.SatViz;
@@ -13,6 +14,7 @@ public abstract class AppState extends BaseAppState {
 
     List<Entity> stateEntities = new ArrayList<>();
     SatViz satViz;
+    EventBus stateEventBus;
 
     @Override
     protected void initialize(Application app) {
@@ -46,6 +48,12 @@ public abstract class AppState extends BaseAppState {
     public void update(float tpf) {
         stateUpdate(tpf);
         stateEntities.forEach(e -> e.onStateUpdate(tpf));
+    }
+
+    public EventBus getStateEventBus() {
+        if(stateEventBus == null)
+            stateEventBus = new EventBus();
+        return stateEventBus;
     }
 
     protected abstract void initializeState();

@@ -1,21 +1,21 @@
 package io.github.bretwitt.mathematics;
 
+import com.jme3.math.FastMath;
+
 public class ClassicalOrbitalElements {
 
-    float p;
     float e;
     float i;
     float raan;
+    float tae;
+    float a;
 
-    public ClassicalOrbitalElements(float p, float e, float i, float raan){
-        this.p = p;
+    public ClassicalOrbitalElements(float a, float e, float i, float raan, float tae){
+        this.a = a;
         this.e = e;
         this.i = i;
         this.raan = raan;
-    }
-
-    public void setP(float p) {
-        this.p = p;
+        this.tae = tae;
     }
 
     public void setE(float e) {
@@ -31,8 +31,10 @@ public class ClassicalOrbitalElements {
     }
 
     public float getP() {
-        return p;
+        return a * (1 - FastMath.pow(e,2));
     }
+
+    public float getA() { return a; }
 
     public float getE() {
         return e;
@@ -46,4 +48,5 @@ public class ClassicalOrbitalElements {
         return raan;
     }
 
+    public float getTAE() { return tae; }
 }

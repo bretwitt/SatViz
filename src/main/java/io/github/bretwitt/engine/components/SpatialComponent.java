@@ -1,17 +1,18 @@
 package io.github.bretwitt.engine.components;
 
+import com.google.common.eventbus.EventBus;
 import com.jme3.scene.Spatial;
 import io.github.bretwitt.SatViz;
 
 public class SpatialComponent extends BaseSpatialComponent {
 
-    public SpatialComponent(Spatial spatial, SatViz app) {
-        super(app);
+    public SpatialComponent(Spatial spatial, EventBus eventBus, SatViz app) {
+        super(eventBus, app);
         this.spatial = spatial;
     }
 
-    public SpatialComponent(SatViz app) {
-        super(app);
+    public SpatialComponent(EventBus eventBus, SatViz app) {
+        super(eventBus, app);
     }
 
     @Override

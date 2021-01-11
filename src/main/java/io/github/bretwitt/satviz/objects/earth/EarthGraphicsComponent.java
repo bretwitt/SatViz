@@ -1,5 +1,6 @@
 package io.github.bretwitt.satviz.objects.earth;
 
+import com.google.common.eventbus.EventBus;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
@@ -9,8 +10,8 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.components.SpatialComponent;
 
 public class EarthGraphicsComponent extends SpatialComponent {
-    public EarthGraphicsComponent(SatViz app) {
-        super(app);
+    public EarthGraphicsComponent(EventBus eventBus, SatViz app) {
+        super(eventBus, app);
         Spatial earth = generateSpatial();
         updateSpatial(earth);
     }

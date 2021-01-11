@@ -10,10 +10,10 @@ public class OrbitDeterminationUtils {
         Vector3f[] orbitPoints = getOrbitPointsCartesianPerifocal(coe, points);
         for(int i = 0; i < points; i++) {
             Matrix3f rotMatrixInclination = getXRotationMatrix(coe.getI());
-            //Matrix3f rotMatrixRAAN = getZRotationMatrix(coe.getRAAN());
+            Matrix3f rotMatrixRAAN = getZRotationMatrix(coe.getRAAN());
 
             orbitPoints[i] = rotMatrixInclination.mult(orbitPoints[i]);
-            //orbitPoints[i] = rotMatrixRAAN.mult(orbitPoints[i]);
+            orbitPoints[i] = rotMatrixRAAN.mult(orbitPoints[i]);
         }
         return orbitPoints;
     }

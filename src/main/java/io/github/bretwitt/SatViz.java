@@ -1,6 +1,7 @@
 package io.github.bretwitt;
 
 
+import com.google.common.eventbus.EventBus;
 import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
@@ -11,6 +12,7 @@ import io.github.bretwitt.satviz.OrbitViewState;
 public class SatViz extends SimpleApplication {
 
     private AppState appState;
+    private EventBus eventBus;
 
     public static void main(String[] args) {
 
@@ -25,6 +27,13 @@ public class SatViz extends SimpleApplication {
 
     public Node getRootNode() {
         return rootNode;
+    }
+
+    public EventBus getGameEventBus() {
+        if(eventBus == null) {
+            eventBus = new EventBus();
+        }
+        return eventBus;
     }
 
     private static AppSettings createSettings() {

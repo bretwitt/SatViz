@@ -52,11 +52,6 @@ public class Orbit {
         return orbitCoordinates;
     }
 
-    public float getTrueAnomalyAtTimeSinceEpoch(float timeSinceEpoch) {
-        float tae = elements.getTAE();
-        return 0.0f;
-    }
-
     public int getSample() {
         return sampling;
     }

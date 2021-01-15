@@ -2,13 +2,10 @@ package io.github.bretwitt.satviz.objects.camera;
 
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.CameraNode;
-import com.jme3.scene.control.CameraControl;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.entities.Entity;
 import io.github.bretwitt.mathematics.GeometryUtils;

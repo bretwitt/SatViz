@@ -15,7 +15,6 @@ public class SatViz extends SimpleApplication {
     private EventBus eventBus;
 
     public static void main(String[] args) {
-
         AppSettings settings = createSettings();
 
         SatViz app = new SatViz();
@@ -23,6 +22,10 @@ public class SatViz extends SimpleApplication {
         app.setShowSettings(false);
 
         app.start();
+    }
+
+    public float getTimeScale() {
+        return 600f;
     }
 
     public Node getRootNode() {
@@ -48,6 +51,7 @@ public class SatViz extends SimpleApplication {
         stateManager.attach(appState);
     }
 
-    public void simpleUpdate(float tpf) {
+    public AppState getCurrentState() {
+        return appState;
     }
 }

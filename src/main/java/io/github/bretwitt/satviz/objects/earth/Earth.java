@@ -2,8 +2,9 @@ package io.github.bretwitt.satviz.objects.earth;
 
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.components.BaseSpatialComponent;
-import io.github.bretwitt.engine.components.SpatialComponent;
 import io.github.bretwitt.engine.entities.Entity;
+import io.github.bretwitt.satviz.objects.earth.components.EarthGraphicsComponent;
+import io.github.bretwitt.satviz.objects.earth.components.EarthMotionComponent;
 
 public class Earth extends Entity {
 

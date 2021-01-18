@@ -6,7 +6,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import io.github.bretwitt.engine.appstates.AppState;
-import io.github.bretwitt.satviz.OrbitViewState;
+import io.github.bretwitt.satviz.simulation.SimulationState;
 
 
 public class SatViz extends SimpleApplication {
@@ -25,7 +25,7 @@ public class SatViz extends SimpleApplication {
     }
 
     public float getTimeScale() {
-        return 600f;
+        return 100f;
     }
 
     public Node getRootNode() {
@@ -47,7 +47,7 @@ public class SatViz extends SimpleApplication {
     }
 
     public void simpleInitApp() {
-        appState = new OrbitViewState();
+        appState = new SimulationState();
         stateManager.attach(appState);
     }
 

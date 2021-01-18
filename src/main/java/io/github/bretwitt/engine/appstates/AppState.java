@@ -20,28 +20,31 @@ public abstract class AppState extends BaseAppState {
     protected void initialize(Application app) {
         satViz = (SatViz) app;
         initializeState();
-        stateEntities.forEach(Entity::onStateInitialize);
+        stateEntities.forEach(Entity::onInitialize);
     }
 
     protected void addEntity(Entity e) {
         stateEntities.add(e);
+        e.onEntityInitialize();
+        e.onEntityEnable();
     }
 
     @Override
     protected void cleanup(Application app) {
+
     }
 
 
     @Override
     protected void onEnable() {
         onStateEnable();
-        stateEntities.forEach(Entity::onStateEnable);
+        stateEntities.forEach(Entity::onEnable);
     }
 
     @Override
     protected void onDisable() {
         onStateDisable();
-        stateEntities.forEach(Entity::onStateDisable);
+        stateEntities.forEach(Entity::onDisable);
     }
 
     @Override
@@ -51,16 +54,18 @@ public abstract class AppState extends BaseAppState {
     }
 
     public EventBus getStateEventBus() {
-        if(stateEventBus == null)
+        if(stateEventBus == null) {
             stateEventBus = new EventBus();
+            stateEventBus.register(this);
+        }
         return stateEventBus;
     }
 
-    protected abstract void initializeState();
-    protected abstract void cleanupState();
-    protected abstract void onStateEnable();
-    protected abstract void onStateDisable();
-    protected abstract void stateUpdate(float tpf);
+    protected void initializeState() {}
+    protected void cleanupState() {}
+    protected void onStateEnable() {}
+    protected void onStateDisable() {}
+    protected void stateUpdate(float tpf) {}
 
 
 }

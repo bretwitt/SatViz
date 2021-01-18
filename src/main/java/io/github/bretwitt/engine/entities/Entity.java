@@ -28,6 +28,8 @@ public abstract class Entity {
 
     public void addComponent(Component c){
         componentList.add(c);
+        c.onInitialize();
+        c.onEnable();
     }
 
     public SatViz getSatViz() {
@@ -38,15 +40,15 @@ public abstract class Entity {
         return eventBus;
     }
 
-    public void onStateInitialize() {
+    public void onInitialize() {
         onEntityInitialize();
         componentList.forEach(Component::onInitialize);
     }
-    public void onStateEnable() {
+    public void onEnable() {
         onEntityEnable();
         componentList.forEach(Component::onEnable);
     }
-    public void onStateDisable() {
+    public void onDisable() {
         onEntityDisable();
         componentList.forEach(Component::onDisable);
     }

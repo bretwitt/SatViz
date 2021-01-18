@@ -2,12 +2,14 @@ package io.github.bretwitt.engine.components;
 
 import com.google.common.eventbus.EventBus;
 import io.github.bretwitt.SatViz;
+import io.github.bretwitt.engine.appstates.AppState;
 
 public abstract class Component {
 
     private SatViz satViz;
     private EventBus eventBus;
     private EventBus stateEventBus;
+    private AppState currentState;
 
     public Component(EventBus eventBus, SatViz satViz) {
         this.satViz = satViz;
@@ -19,10 +21,11 @@ public abstract class Component {
         return satViz;
     }
     public EventBus getEventBus() { return eventBus; }
+    public AppState getAppState() { return satViz.getCurrentState(); }
 
-    public abstract void onInitialize();
-    public abstract void onEnable();
-    public abstract void update(float tpf);
-    public abstract void onDisable();
+    public void onInitialize() {}
+    public void onEnable() {}
+    public void update(float tpf) {}
+    public void onDisable() {}
 
 }

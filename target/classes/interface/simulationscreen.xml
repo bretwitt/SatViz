@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+  <!-- include the style file for the standard controls -->
+  <useStyles filename="nifty-default-styles.xml" />
+  <!-- include the standard controls -->
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="SimulationScreen" controller="io.github.bretwitt.satviz.simulation.gui.simulationscreen.SimulationScreenController">
+    <layer id="panel" backgroundColor="#0000" childLayout="center">
+      <panel id="rightpanel" height="100%" width="25%" align="right" valign="center" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
+		<control id="satelliteListBox" name="listBox" vertical="on" horizontal="optional" displayItems="4" />
+        <control name="button" label="Add Satellite" id="addSatelliteButton" align="right" valign="right"/>
+      </panel>
+    </layer>
+  </screen>
+  <screen id="end">
+  </screen>
+</nifty>

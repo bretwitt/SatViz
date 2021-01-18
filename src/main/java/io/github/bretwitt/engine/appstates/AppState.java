@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import io.github.bretwitt.SatViz;
+import io.github.bretwitt.engine.appstates.stateeventbus.StateEventBus;
 import io.github.bretwitt.engine.entities.Entity;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public abstract class AppState extends BaseAppState {
 
     List<Entity> stateEntities = new ArrayList<>();
     SatViz satViz;
-    EventBus stateEventBus;
+    StateEventBus stateEventBus;
 
     @Override
     protected void initialize(Application app) {
@@ -31,7 +32,8 @@ public abstract class AppState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-
+        stateEntities.forEach(Entity::onEntityEnable);
+        stateEventBus.unregister(this);
     }
 
 
@@ -55,7 +57,7 @@ public abstract class AppState extends BaseAppState {
 
     public EventBus getStateEventBus() {
         if(stateEventBus == null) {
-            stateEventBus = new EventBus();
+            stateEventBus = new StateEventBus();
             stateEventBus.register(this);
         }
         return stateEventBus;

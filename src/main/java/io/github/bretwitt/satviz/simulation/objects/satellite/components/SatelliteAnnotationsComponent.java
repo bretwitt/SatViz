@@ -21,11 +21,6 @@ public class SatelliteAnnotationsComponent extends SpatialComponent {
     }
 
     @Override
-    public void onInitialize() {
-
-    }
-
-    @Override
     public void onEnable() {
         setupNameLabel();
     }
@@ -52,10 +47,5 @@ public class SatelliteAnnotationsComponent extends SpatialComponent {
         if(satellite != null && satellite.getSpatial() != null) {
             updateNameLabel();
         }
-    }
-
-    @Override
-    public void onDisable() {
-
     }
 }

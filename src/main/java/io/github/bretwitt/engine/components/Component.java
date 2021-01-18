@@ -8,8 +8,6 @@ public abstract class Component {
 
     private SatViz satViz;
     private EventBus eventBus;
-    private EventBus stateEventBus;
-    private AppState currentState;
 
     public Component(EventBus eventBus, SatViz satViz) {
         this.satViz = satViz;

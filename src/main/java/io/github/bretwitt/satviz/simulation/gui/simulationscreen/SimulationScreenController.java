@@ -1,39 +1,45 @@
 package io.github.bretwitt.satviz.simulation.gui.simulationscreen;
 
-import com.google.common.eventbus.EventBus;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import io.github.bretwitt.SatViz;
-import io.github.bretwitt.satviz.simulation.gui.simulationscreen.SatelliteListBox.satellitebox.OnSatelliteAddClickedEvent;
-import io.github.bretwitt.satviz.simulation.gui.simulationscreen.SatelliteListBox.satellitebox.SatelliteBox;
-import io.github.bretwitt.satviz.simulation.gui.simulationscreen.SatelliteListBox.satellitebox.SatelliteListBox;
+import io.github.bretwitt.engine.appstates.stateeventbus.StateEventBus;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.guicomponents.addsatelliteprompt.AddSatellitePrompt;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.screeneventbus.ScreenEventBus;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.screeneventbus.events.OnSatelliteAddClickedEvent;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.guicomponents.satellitebox.SatelliteBox;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.guicomponents.satellitebox.SatelliteListBox;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.screeneventbus.events.OnSatelliteListBoxSelectionEvent;
+import io.github.bretwitt.satviz.simulation.objects.satellite.Satellite;
 
 import javax.annotation.Nonnull;
 
 public class SimulationScreenController implements ScreenController {
 
     Screen screen;
+    Nifty nifty;
     SatViz satViz;
 
-    SatelliteListBox box;
+    SatelliteListBox satelliteListBox;
+    AddSatellitePrompt addSatellitePrompt;
 
-    EventBus screenEventBus;
-    EventBus stateEventBus;
+    ScreenEventBus screenEventBus;
+    StateEventBus stateEventBus;
 
-    public SimulationScreenController(SatViz satViz, EventBus stateEventBus) {
+    public SimulationScreenController(SatViz satViz, StateEventBus stateEventBus) {
         this.stateEventBus = stateEventBus;
         this.satViz = satViz;
-
         initializeEventBusses();
     }
 
     private void initializeEventBusses() {
         stateEventBus.register(this);
-        screenEventBus = new EventBus();
+        screenEventBus = new ScreenEventBus();
     }
 
     @Override
@@ -47,8 +53,9 @@ public class SimulationScreenController implements ScreenController {
     }
 
     public void initScreenElements() {
-        ListBox<SatelliteBox> satelliteListBoxControl = screen.findNiftyControl("satelliteListBox", ListBox.class);
-        box = new SatelliteListBox(satelliteListBoxControl, screenEventBus, stateEventBus, satViz);
+        ListBox satelliteListBoxNiftyControl = screen.findNiftyControl("satelliteListBox", ListBox.class);
+        satelliteListBox = new SatelliteListBox(satelliteListBoxNiftyControl, nifty, screenEventBus, stateEventBus, satViz);
+        addSatellitePrompt = new AddSatellitePrompt(nifty, screenEventBus, stateEventBus);
     }
 
     @Override
@@ -60,5 +67,12 @@ public class SimulationScreenController implements ScreenController {
         OnSatelliteAddClickedEvent clickedEvent = new OnSatelliteAddClickedEvent();
         screenEventBus.post(clickedEvent);
     }
+
+    @NiftyEventSubscriber(id="satelliteListBox")
+    public void onSatelliteListBoxSelection(String id, ListBoxSelectionChangedEvent<SatelliteBox> event) {
+        OnSatelliteListBoxSelectionEvent selectionEvent = new OnSatelliteListBoxSelectionEvent(event.getSelection());
+        screenEventBus.post(selectionEvent);
+    }
 }
+
 

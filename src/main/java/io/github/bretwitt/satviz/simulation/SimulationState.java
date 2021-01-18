@@ -1,16 +1,11 @@
 package io.github.bretwitt.satviz.simulation;
 
 import com.google.common.eventbus.Subscribe;
-import com.jme3.math.FastMath;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
-import io.github.bretwitt.engine.events.Event;
-import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
-import io.github.bretwitt.satviz.simulation.gui.SatelliteGUI;
-import io.github.bretwitt.satviz.simulation.gui.simulationscreen.SimulationScreen;
+import io.github.bretwitt.satviz.simulation.gui.simulationscreen.SimulationScreenBootstrap;
 import io.github.bretwitt.satviz.simulation.objects.camera.PlanetOrbitCamera;
 import io.github.bretwitt.satviz.simulation.objects.earth.Earth;
-import io.github.bretwitt.mathematics.astrodynamics.Orbit;
 import io.github.bretwitt.satviz.simulation.objects.satellite.Satellite;
 import io.github.bretwitt.satviz.simulation.stateevents.OnSatelliteAddEvent;
 
@@ -18,7 +13,7 @@ public class SimulationState extends AppState {
 
     float simulationTime;
     SatViz satViz;
-    SimulationScreen gui;
+    SimulationScreenBootstrap gui;
 
     @Override
     public void initializeState() {
@@ -26,7 +21,7 @@ public class SimulationState extends AppState {
 
         Earth earth = new Earth(satViz);
         PlanetOrbitCamera camera = new PlanetOrbitCamera(earth,satViz);
-        SimulationScreen simulationGUI = new SimulationScreen(satViz);
+        SimulationScreenBootstrap simulationGUI = new SimulationScreenBootstrap(satViz);
 
         addEntity(earth);
         addEntity(camera);

@@ -1,4 +1,4 @@
-package io.github.bretwitt.satviz.simulation.gui.simulationscreen.SatelliteListBox.satellitebox;
+package io.github.bretwitt.satviz.simulation.gui.simulationscreen.guicomponents.satellitebox;
 
 import io.github.bretwitt.satviz.simulation.objects.satellite.Satellite;
 

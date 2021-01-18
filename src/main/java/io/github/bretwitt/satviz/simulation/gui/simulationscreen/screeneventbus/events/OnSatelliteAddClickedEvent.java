@@ -1,4 +1,4 @@
-package io.github.bretwitt.satviz.simulation.gui.simulationscreen.SatelliteListBox.satellitebox;
+package io.github.bretwitt.satviz.simulation.gui.simulationscreen.screeneventbus.events;
 
 import io.github.bretwitt.engine.events.Event;
 

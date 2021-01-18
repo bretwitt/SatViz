@@ -6,21 +6,22 @@ import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.ScreenController;
 import io.github.bretwitt.SatViz;
+import io.github.bretwitt.engine.appstates.stateeventbus.StateEventBus;
 import io.github.bretwitt.engine.entities.Entity;
 
-public class SimulationScreen extends Entity {
+public class SimulationScreenBootstrap extends Entity {
 
     Nifty nifty;
     SimulationScreenController controller;
-    EventBus simulationEventBus;
+    StateEventBus simulationEventBus;
 
-    public SimulationScreen(SatViz satViz) {
+    public SimulationScreenBootstrap(SatViz satViz) {
         super(satViz);
     }
 
     @Override
     public void onEntityEnable() {
-        simulationEventBus = getSatViz().getCurrentState().getStateEventBus();
+        simulationEventBus = (StateEventBus) getSatViz().getCurrentState().getStateEventBus();
         initializeController();
         initializeScreen(controller,getSatViz());
     }

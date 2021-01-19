@@ -7,6 +7,8 @@ import io.github.bretwitt.mathematics.GeometryUtils;
 
 public class OrbitGeometryUtils {
 
+    public static float mu = 1;
+
     public static Vector3f[] getOrbitPointsCartesianGeocentric(ClassicalOrbitalElements coe, int points) {
         Vector3f[] orbitPoints = getOrbitPointsCartesianPerifocal(coe, points);
         for(int i = 0; i < points; i++) {
@@ -78,7 +80,7 @@ public class OrbitGeometryUtils {
     public static float getTrueAnomalyAtTime(ClassicalOrbitalElements elements, float period, float tSecs) {
         float meanAnomaly = getMeanAnomaly(tSecs, period);
         float ecc = elements.getE();
-        float eccAnomaly = calculateKeplersProblem(ecc, meanAnomaly, 0.001f);
+        float eccAnomaly = calculateKeplersProblem(ecc, meanAnomaly, 0.00001f);
         float trueAnomaly = getTrueAnomaly(eccAnomaly, ecc);
         return (trueAnomaly + elements.getTAE()) % FastMath.TWO_PI;
     }
@@ -120,7 +122,7 @@ public class OrbitGeometryUtils {
     }
 
     public static float getSpecificAngularMomentum(ClassicalOrbitalElements elements) {
-        return FastMath.sqrt(elements.getP());
+        return FastMath.sqrt(elements.getP() / mu);
     }
 
     public static float getPeriapsis(ClassicalOrbitalElements coe) {

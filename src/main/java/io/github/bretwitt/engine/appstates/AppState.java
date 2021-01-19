@@ -55,7 +55,7 @@ public abstract class AppState extends BaseAppState {
         stateEntities.forEach(e -> e.onStateUpdate(tpf));
     }
 
-    public EventBus getStateEventBus() {
+    public StateEventBus getStateEventBus() {
         if(stateEventBus == null) {
             stateEventBus = new StateEventBus();
             stateEventBus.register(this);

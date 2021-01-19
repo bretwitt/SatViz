@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>io.github.bretwitt</groupId>
     <artifactId>SatViz</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -16,11 +16,17 @@
         <jme3_v>3.3.2-stable</jme3_v>
     </properties>
 
+
     <repositories>
+        <repository>
+            <id>legui-repo1</id>
+            <url>https://raw.github.com/SpinyOwl/repo/</url>
+        </repository>
         <repository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -38,10 +44,30 @@
             <artifactId>guava</artifactId>
             <version>30.0-jre</version>
         </dependency>
-        <dependency>
+        <!-- Lemur UI -->
+
+        <!-- <dependency>
             <groupId>com.simsilica</groupId>
             <artifactId>lemur-proto</artifactId>
             <version>1.11.0</version>
+        </dependency> -->
+
+        <!-- JavaFX for JME -->
+        <dependency>
+            <groupId>com.jayfella</groupId>
+            <artifactId>jme-jfx-11</artifactId>
+            <version>1.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>15.0.1</version>
+        </dependency>
+        <!-- -->
+        <dependency>
+            <groupId>org.joml</groupId>
+            <artifactId>joml</artifactId>
+            <version>1.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -53,6 +79,7 @@
             <artifactId>groovy-jsr223</artifactId>
             <version>4.0.0-alpha-1</version>
         </dependency>
+        <!-- JMonkey Engine Dependencies -->
         <dependency>
             <groupId>${jme3_g}</groupId>
             <artifactId>jme3-core</artifactId>
@@ -69,11 +96,12 @@
             <artifactId>jme3-lwjgl</artifactId>
             <version>${jme3_v}</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>${jme3_g}</groupId>
             <artifactId>jme3-niftygui</artifactId>
             <version>${jme3_v}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
 

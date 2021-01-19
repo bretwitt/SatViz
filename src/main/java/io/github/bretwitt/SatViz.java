@@ -2,6 +2,7 @@ package io.github.bretwitt;
 
 
 import com.google.common.eventbus.EventBus;
+import com.jayfella.jme.jfx.JavaFxUI;
 import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
@@ -47,6 +48,7 @@ public class SatViz extends SimpleApplication {
     }
 
     public void simpleInitApp() {
+        JavaFxUI.initialize(this);
         appState = new SimulationState();
         stateManager.attach(appState);
     }

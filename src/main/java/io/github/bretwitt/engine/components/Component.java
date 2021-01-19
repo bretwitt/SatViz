@@ -1,6 +1,7 @@
 package io.github.bretwitt.engine.components;
 
 import com.google.common.eventbus.EventBus;
+import com.jayfella.jme.jfx.JavaFxUI;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
 

@@ -43,7 +43,7 @@ public class SatViz extends SimpleApplication {
     private static AppSettings createSettings() {
         AppSettings settings = new AppSettings(true);
         settings.setTitle("SatViz: Earth Orbit Satellite Visualization");
-        settings.setResolution(1800,1600);
+        settings.setResolution(1920,1080);
         return settings;
     }
 

@@ -46,11 +46,6 @@
         </dependency>
         <!-- Lemur UI -->
 
-        <!-- <dependency>
-            <groupId>com.simsilica</groupId>
-            <artifactId>lemur-proto</artifactId>
-            <version>1.11.0</version>
-        </dependency> -->
 
         <!-- JavaFX for JME -->
         <dependency>
@@ -58,11 +53,24 @@
             <artifactId>jme-jfx-11</artifactId>
             <version>1.1.5</version>
         </dependency>
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>15.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>15</version>
+        </dependency>
+        <!-- JMetro Theme for JavaFX-->
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jmetro</artifactId>
+            <version>11.6.14</version>
+        </dependency>
+
         <!-- -->
         <dependency>
             <groupId>org.joml</groupId>
@@ -95,6 +103,11 @@
             <groupId>${jme3_g}</groupId>
             <artifactId>jme3-lwjgl</artifactId>
             <version>${jme3_v}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>15.0.1</version>
         </dependency>
         <!--
         <dependency>

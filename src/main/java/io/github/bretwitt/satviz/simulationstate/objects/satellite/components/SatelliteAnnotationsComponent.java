@@ -4,16 +4,21 @@ import com.google.common.eventbus.EventBus;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.control.BillboardControl;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.components.SpatialComponent;
+import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 
 public class SatelliteAnnotationsComponent extends SpatialComponent {
 
     Satellite satellite;
     BitmapText nameLabel;
+    Node pivot;
 
     public SatelliteAnnotationsComponent(Satellite s, EventBus eventBus, SatViz app) {
         super(eventBus, app);
@@ -26,7 +31,7 @@ public class SatelliteAnnotationsComponent extends SpatialComponent {
     }
 
     private void setupNameLabel() {
-        Node pivot = new Node();
+        pivot = new Node();
         BitmapFont font = getSatViz().getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         BitmapText text = new BitmapText(font, false);
         text.setSize(0.2f);
@@ -47,5 +52,10 @@ public class SatelliteAnnotationsComponent extends SpatialComponent {
         if(satellite != null && satellite.getSpatial() != null) {
             updateNameLabel();
         }
+    }
+
+    @Override
+    public void onDisable() {
+        getSatViz().getRootNode().detachChild(pivot);
     }
 }

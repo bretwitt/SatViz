@@ -2,16 +2,12 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolb
 
 import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
-import com.jme3.math.Vector3f;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
 import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
-import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.UpdateElementsGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.UpdateElementsGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.*;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -69,7 +65,8 @@ public class SimulationToolbarController extends GUIController {
     private AnchorPane parent;
 
 
-    public void initialize() {
+    public void initialize()
+    {
         addChangedListListener();
     }
 
@@ -121,7 +118,12 @@ public class SimulationToolbarController extends GUIController {
     private float getFieldAsFloat(TextField field) {
         return Float.parseFloat(field.getText());
     }
-    
+
+    public void removeSatelliteClicked() {
+        Satellite satellite = satelliteListView.getSelectionModel().getSelectedItem();
+        JavaFxUI.getInstance().runInJavaFxThread(()->getGuiEventBus().post(new OnRemoveSatelliteGUIEvent(new OnRemoveSatelliteGUIEventData(satellite))));
+    }
+
     public void addSatelliteClicked() {
         addSatellitePopup.setVisible(true);
     }
@@ -141,6 +143,7 @@ public class SimulationToolbarController extends GUIController {
         });
     }
 
+
     public void pickedSatellite() {
         Satellite satellite = satelliteListView.getSelectionModel().getSelectedItem();
 
@@ -153,7 +156,6 @@ public class SimulationToolbarController extends GUIController {
 
     }
 
-
     private void fillElementFields(ClassicalOrbitalElements elements) {
         newElementSemiMajorAxis.setText(String.valueOf(elements.getA()));
         newElementEccentricity.setText(String.valueOf(elements.getE()));
@@ -161,6 +163,8 @@ public class SimulationToolbarController extends GUIController {
         newElementRaan.setText(String.valueOf(elements.getRAAN()));
         newElementTae.setText(String.valueOf(elements.getTAE()));
     }
+
+
     @Subscribe
     public void refreshSatelliteList(OnSatelliteListUpdatedGUIEvent event) {
         List<Satellite> satellites = ((OnSatelliteListUpdateGUIEventData)(event.getData())).getSatelliteList();

@@ -140,9 +140,6 @@ public class OrbitGeometryUtils {
 
     @NotNull
     public static ClassicalOrbitalElements calculateElements(@NotNull Vector3f position, Vector3f velocity) {
-        float i = 0;
-        float raan = 0;
-        float tae = 0;
 
         float r = position.length();
         float v = velocity.length();
@@ -151,9 +148,15 @@ public class OrbitGeometryUtils {
         float h = H.length();
 
         float E = (float) ((Math.pow(v,2) / r) - (mu / r));
-        double p = Math.pow(h,2) / mu;
         float a = -mu / (E * 2);
         float e = (float) Math.sqrt(1 + ((2 * E * Math.pow(h,2)) / Math.pow(mu,2)));
+
+        Vector3f eVec = ((position.cross(velocity)).divide(mu)).subtract(position.divide(r));
+        Vector3f n = H.cross(Vector3f.UNIT_Z);
+
+        float i = FastMath.acos(H.y / h);
+        float raan = FastMath.acos(n.x / n.length());
+        float tae = FastMath.acos(eVec.dot(position) / (n.length()*r));
 
         return new ClassicalOrbitalElements(a,e,i,raan,tae);
     }

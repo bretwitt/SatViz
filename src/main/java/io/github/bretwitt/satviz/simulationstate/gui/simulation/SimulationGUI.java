@@ -11,6 +11,8 @@ import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.StateVectors;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.*;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.satelliteinformationpanel.SatelliteInformationPanel;
+import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolbar.SimulationToolbar;
@@ -68,6 +70,11 @@ public class SimulationGUI extends Entity {
     public void onAddSatelliteEvent(OnAddSatelliteGUIEvent event) {
         String name = event.getData().getName();
         stateEventBus.post(new OnAddSatelliteEvent(new OnAddSatelliteEventData(name)));
+    }
+
+    @Subscribe
+    public void onRemoveSatelliteEvent(OnRemoveSatelliteGUIEvent event) {
+        stateEventBus.post(new OnRemoveSatelliteEvent(new OnRemoveSatelliteEventData(event.getData().getSatellite())));
     }
 
     @Subscribe

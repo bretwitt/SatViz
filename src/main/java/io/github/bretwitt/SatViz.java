@@ -32,7 +32,7 @@ public class SatViz extends SimpleApplication {
     }
 
     public float getTimeScale() {
-        return 100f;
+        return 500f;
     }
 
     public Node getRootNode() {

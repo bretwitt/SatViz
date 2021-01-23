@@ -60,6 +60,7 @@ public abstract class Entity {
         onEntityUpdate(tpf);
         componentList.forEach(c -> c.update(tpf));
     }
+
     public void onEntityInitialize() { }
     public void onEntityEnable() { }
     public void onEntityDisable() { }

@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
 import io.github.bretwitt.satviz.simulationstate.SimulationState;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolbar.PickedSatelliteListViewGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.PickedSatelliteListViewGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;

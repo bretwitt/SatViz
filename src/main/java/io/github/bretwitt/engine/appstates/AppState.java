@@ -31,12 +31,16 @@ public abstract class AppState extends BaseAppState {
         e.onEntityEnable();
     }
 
-    @Override
-    protected void cleanup(Application app) {
-        stateEntities.forEach(Entity::onEntityEnable);
-        stateEventBus.unregister(this);
+    protected void removeEntity(Entity e) {
+        stateEntities.remove(e);
+        e.onDisable();
     }
 
+    @Override
+    protected void cleanup(Application app) {
+        stateEntities.forEach(Entity::onDisable);
+        stateEventBus.unregister(this);
+    }
 
     @Override
     protected void onEnable() {

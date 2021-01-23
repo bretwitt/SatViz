@@ -36,6 +36,6 @@ public class SpatialComponent extends BaseSpatialComponent {
 
     @Override
     public void onDisable() {
-
+        getSatViz().getRootNode().detachChild(getSpatial());
     }
 }

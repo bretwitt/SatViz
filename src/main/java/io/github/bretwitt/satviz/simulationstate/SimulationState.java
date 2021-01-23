@@ -5,6 +5,7 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
 import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.Orbit;
+import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.SimulationGUI;
 import io.github.bretwitt.satviz.simulationstate.objects.camera.PlanetOrbitCamera;
@@ -49,6 +50,12 @@ public class SimulationState extends AppState {
     }
 
     @Subscribe
+    public void onRemoveSatelliteEvent(OnRemoveSatelliteEvent removeSatelliteEvent) {
+        Satellite toRemove = removeSatelliteEvent.getData().getSatellite();
+        removeSatellite(toRemove);
+    }
+    
+    @Subscribe
     public void onAddSatelliteEvent(OnAddSatelliteEvent addSatelliteEvent) {
         String name = addSatelliteEvent.getData().getName();
         ClassicalOrbitalElements elements = new ClassicalOrbitalElements(1.06f,0,0,0,0);
@@ -60,6 +67,12 @@ public class SimulationState extends AppState {
     private void addSatellite(Satellite satellite) {
         addEntity(satellite);
         satelliteList.add(satellite);
+        getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
+    }
+
+    private void removeSatellite(Satellite satellite) {
+        removeEntity(satellite);
+        satelliteList.remove(satellite);
         getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
     }
 }

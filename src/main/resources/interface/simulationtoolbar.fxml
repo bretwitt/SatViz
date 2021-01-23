@@ -46,7 +46,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TitledPane layoutX="1603.0" layoutY="40.0" prefHeight="781.0" prefWidth="296.0" text="Simulation Properties">
+        <TitledPane animated="false" collapsible="false" layoutX="1603.0" layoutY="40.0" prefHeight="781.0" prefWidth="296.0" text="Simulation Properties">
         <content>
           <AnchorPane minHeight="590.0" minWidth="280.0" prefHeight="590.0" prefWidth="280.0">
                <children>
@@ -58,7 +58,7 @@
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
                                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#addSatelliteClicked" text="Add" />
-                                    <Button mnemonicParsing="false" text="Remove" />
+                                    <Button mnemonicParsing="false" onAction="#removeSatelliteClicked" text="Remove" />
                                 </buttons>
                               </ButtonBar>
                            </items>

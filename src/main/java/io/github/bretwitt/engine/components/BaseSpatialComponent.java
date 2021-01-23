@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import io.github.bretwitt.SatViz;
-import io.github.bretwitt.satviz.simulation.objects.satellite.events.OnSpatialUpdateEvent;
+import io.github.bretwitt.satviz.simulationstate.objects.satellite.events.OnSpatialUpdateEvent;
 
 public abstract class BaseSpatialComponent extends Component {
 

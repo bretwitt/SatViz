@@ -19,10 +19,6 @@
 
     <repositories>
         <repository>
-            <id>legui-repo1</id>
-            <url>https://raw.github.com/SpinyOwl/repo/</url>
-        </repository>
-        <repository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com</url>
         </repository>
@@ -44,8 +40,6 @@
             <artifactId>guava</artifactId>
             <version>30.0-jre</version>
         </dependency>
-        <!-- Lemur UI -->
-
 
         <!-- JavaFX for JME -->
         <dependency>
@@ -63,6 +57,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>15.0.1</version>
         </dependency>
         <!-- JMetro Theme for JavaFX-->
         <dependency>
@@ -104,17 +103,6 @@
             <artifactId>jme3-lwjgl</artifactId>
             <version>${jme3_v}</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>15.0.1</version>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>${jme3_g}</groupId>
-            <artifactId>jme3-niftygui</artifactId>
-            <version>${jme3_v}</version>
-        </dependency>-->
     </dependencies>
 
 

@@ -22,6 +22,7 @@ public abstract class AppState extends BaseAppState {
         satViz = (SatViz) app;
         initializeState();
         stateEntities.forEach(Entity::onInitialize);
+        stateEventBus.register(this);
     }
 
     protected void addEntity(Entity e) {

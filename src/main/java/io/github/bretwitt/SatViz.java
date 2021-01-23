@@ -7,7 +7,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import io.github.bretwitt.engine.appstates.AppState;
-import io.github.bretwitt.satviz.simulation.SimulationState;
+import io.github.bretwitt.satviz.simulationstate.SimulationState;
 
 
 public class SatViz extends SimpleApplication {
@@ -23,6 +23,12 @@ public class SatViz extends SimpleApplication {
         app.setShowSettings(false);
 
         app.start();
+    }
+
+    public void simpleInitApp() {
+        JavaFxUI.initialize(this);
+        appState = new SimulationState();
+        stateManager.attach(appState);
     }
 
     public float getTimeScale() {
@@ -45,12 +51,6 @@ public class SatViz extends SimpleApplication {
         settings.setTitle("SatViz: Earth Orbit Satellite Visualization");
         settings.setResolution(1920,1080);
         return settings;
-    }
-
-    public void simpleInitApp() {
-        JavaFxUI.initialize(this);
-        appState = new SimulationState();
-        stateManager.attach(appState);
     }
 
     public AppState getCurrentState() {

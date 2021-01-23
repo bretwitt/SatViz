@@ -4,6 +4,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.mathematics.GeometryUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class OrbitGeometryUtils {
 
@@ -74,7 +75,7 @@ public class OrbitGeometryUtils {
     }
 
     public static float getPeriod(float a) {
-        return FastMath.TWO_PI * FastMath.sqrt(FastMath.pow(a,3));
+        return FastMath.TWO_PI * FastMath.sqrt(FastMath.pow(a,3) / mu);
     }
 
     public static float getTrueAnomalyAtTime(ClassicalOrbitalElements elements, float period, float tSecs) {
@@ -125,13 +126,35 @@ public class OrbitGeometryUtils {
         return FastMath.sqrt(elements.getP() / mu);
     }
 
-    public static float getPeriapsis(ClassicalOrbitalElements coe) {
+    public static float getPeriapsis(@NotNull ClassicalOrbitalElements coe) {
         return coe.getA() * (1 - coe.getE());
     }
 
-    public static float getApoapsis(ClassicalOrbitalElements coe) {
+    public static float getApoapsis(@NotNull ClassicalOrbitalElements coe) {
         return coe.getA() * (1 + coe.getE());
     }
 
+    public static float getEnergy(ClassicalOrbitalElements coe) {
+        return (-mu / (2 * coe.getA()));
+    }
 
+    @NotNull
+    public static ClassicalOrbitalElements calculateElements(@NotNull Vector3f position, Vector3f velocity) {
+        float i = 0;
+        float raan = 0;
+        float tae = 0;
+
+        float r = position.length();
+        float v = velocity.length();
+
+        Vector3f H = (position.cross(velocity));
+        float h = H.length();
+
+        float E = (float) ((Math.pow(v,2) / r) - (mu / r));
+        double p = Math.pow(h,2) / mu;
+        float a = -mu / (E * 2);
+        float e = (float) Math.sqrt(1 + ((2 * E * Math.pow(h,2)) / Math.pow(mu,2)));
+
+        return new ClassicalOrbitalElements(a,e,i,raan,tae);
+    }
 }

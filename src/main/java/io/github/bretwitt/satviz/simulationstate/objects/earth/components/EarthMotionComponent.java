@@ -2,6 +2,7 @@ package io.github.bretwitt.satviz.simulationstate.objects.earth.components;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -27,7 +28,7 @@ public class EarthMotionComponent extends Component {
 
     public void update(float tpf) {
         float t = ((SimulationState)(getAppState())).getSimulationTime();
-        float rot = t / 13;
+        float rot = t * 0.00934579f * FastMath.TWO_PI;
         spatial.setLocalRotation(new Quaternion().fromAngleAxis(rot, Vector3f.UNIT_Z));
     }
 

@@ -7,20 +7,33 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.stateeventbus.StateEventBus;
 import io.github.bretwitt.engine.entities.Entity;
 import io.github.bretwitt.engine.gui.guicomponents.eventbus.GuiEventBus;
-import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
 import io.github.bretwitt.mathematics.astrodynamics.StateVectors;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onaddsatelliteguievent.OnAddSatelliteGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdateGUIEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdatedGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onupdateelementsevent.OnUpdateElementsData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onupdateelementsevent.OnUpdateElementsEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.*;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.satelliteinformationpanel.SatelliteInformationPanel;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEvent;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolbar.SimulationToolbar;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnUpdateStateVectorEvent;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnUpdateStateVectorEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatetleevent.UpdateTLEEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatetleevent.UpdateTLEEventData;
 
 import java.util.List;
 
@@ -49,11 +62,19 @@ public class SimulationGUI extends Entity {
 
     @Subscribe
     public void onUpdateStateVectorEvent(OnUpdateStateVectorGUIEvent event) {
-        UpdateStateVectorData data = event.getVectorData();
+        OnUpdateStateVectorGUIEventData data = event.getVectorData();
         StateVectors stateVectors = data.getStateVectors();
         Satellite satellite = data.getSatellite();
         stateEventBus.post(new OnUpdateStateVectorEvent(
                                     new OnUpdateStateVectorEventData(satellite,stateVectors)));
+    }
+
+    @Subscribe
+    public void onUpdateTLEEvent(UpdateTLEGUIEvent event) {
+        UpdateTLEGUIEventData data = event.getData();
+        SimpleTwoLineElementSet set = data.getTle();
+        Satellite satellite = data.getSatellite();
+        stateEventBus.post(new UpdateTLEEvent(new UpdateTLEEventData(satellite,set)));
     }
 
     @Subscribe

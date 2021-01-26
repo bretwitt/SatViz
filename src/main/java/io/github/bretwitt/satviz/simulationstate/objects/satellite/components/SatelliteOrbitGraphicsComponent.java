@@ -47,7 +47,7 @@
     @Override
     public void onDisable() {
         updateSpatial(null);
-        getEventBus().unregister(this);
+        //getEventBus().unregister(this);
     }
 
     private Spatial generateOrbitalSpatial(Orbit orbit) {

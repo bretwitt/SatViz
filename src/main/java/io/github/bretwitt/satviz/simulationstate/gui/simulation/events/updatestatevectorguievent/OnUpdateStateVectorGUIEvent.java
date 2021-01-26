@@ -5,14 +5,14 @@ import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 
 public class OnUpdateStateVectorGUIEvent extends Event {
 
-    UpdateStateVectorData data;
+    OnUpdateStateVectorGUIEventData data;
 
     public OnUpdateStateVectorGUIEvent(Satellite satellite, float posI, float posJ, float posK, float velI, float velJ, float velK) {
-        super(new UpdateStateVectorData(satellite, posI,posJ,posK,velI,velJ,velK));
-        this.data = (UpdateStateVectorData)getData();
+        super(new OnUpdateStateVectorGUIEventData(satellite, posI,posJ,posK,velI,velJ,velK));
+        this.data = (OnUpdateStateVectorGUIEventData)getData();
     }
 
-    public UpdateStateVectorData getVectorData() {
+    public OnUpdateStateVectorGUIEventData getVectorData() {
         return data;
     }
 }

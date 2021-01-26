@@ -4,6 +4,9 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.mathematics.GeometryUtils;
+import io.github.bretwitt.mathematics.UnitConversionUtils;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
 import org.jetbrains.annotations.NotNull;
 
 public class OrbitGeometryUtils {
@@ -14,7 +17,7 @@ public class OrbitGeometryUtils {
         Vector3f[] orbitPoints = getOrbitPointsCartesianPerifocal(coe, points);
         for(int i = 0; i < points; i++) {
             Matrix3f rotMatrixInclination = GeometryUtils.getXRotationMatrix(coe.getI());
-            Matrix3f rotMatrixRAAN = GeometryUtils.getZRotationMatrix(coe.getRAAN());
+            Matrix3f rotMatrixRAAN = GeometryUtils.getZRotationMatrix(coe.getRAAN() + coe.getAoP());
 
             orbitPoints[i] = rotMatrixInclination.mult(orbitPoints[i]);
             orbitPoints[i] = rotMatrixRAAN.mult(orbitPoints[i]);
@@ -49,10 +52,10 @@ public class OrbitGeometryUtils {
         Vector3f velocity = calculatePerifocalVelocityVector(E,e,a);
 
         position = GeometryUtils.getXRotationMatrix(elements.getI()).mult(position);
-        position = GeometryUtils.getZRotationMatrix(elements.getRAAN()).mult(position);
+        position = GeometryUtils.getZRotationMatrix(elements.getRAAN() + elements.getAoP()).mult(position);
 
         velocity = GeometryUtils.getXRotationMatrix(elements.getI()).mult(velocity);
-        velocity = GeometryUtils.getZRotationMatrix(elements.getRAAN()).mult(velocity);
+        velocity = GeometryUtils.getZRotationMatrix(elements.getRAAN() + elements.getAoP()).mult(velocity);
         return new StateVectors(position,velocity);
     }
 
@@ -94,7 +97,7 @@ public class OrbitGeometryUtils {
         Vector3f positionVectorInclined =
                 GeometryUtils.getXRotationMatrix(elements.getI()).mult(positionVectorPerifocal);
         Vector3f positionVectorGeocentric =
-                GeometryUtils.getZRotationMatrix(elements.getRAAN()).mult(positionVectorInclined);
+                GeometryUtils.getZRotationMatrix(elements.getRAAN() + elements.getAoP()).mult(positionVectorInclined);
         return positionVectorGeocentric;
     }
 
@@ -156,8 +159,24 @@ public class OrbitGeometryUtils {
 
         float i = FastMath.acos(H.y / h);
         float raan = FastMath.acos(n.x / n.length());
-        float tae = FastMath.acos(eVec.dot(position) / (n.length()*r));
+        float aop = n.dot(eVec) / (n.length() * e);
 
-        return new ClassicalOrbitalElements(a,e,i,raan,tae);
+        float tae = FastMath.acos(eVec.dot(position) / (n.length()*r));
+        return new ClassicalOrbitalElements(a,e,i,raan,aop,tae);
+    }
+
+    public static ClassicalOrbitalElements calculateElements(SimpleTwoLineElementSet set) {
+        float e = set.getE();
+        float i = set.getI();
+        float raan = set.getRaan();
+        float aop = set.getAoP();
+        float n = set.getN();
+        float tae = set.getMA();
+
+        float a = (
+                FastMath.pow(mu / (FastMath.pow(n,2)),(float)1/3)
+        );
+
+        return new ClassicalOrbitalElements(a,e,i,raan,aop,tae);
     }
 }

@@ -6,18 +6,21 @@ import com.jme3.scene.Spatial;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.components.Component;
 import io.github.bretwitt.engine.entities.Entity;
-import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.Orbit;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
 import io.github.bretwitt.mathematics.astrodynamics.StateVectors;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.OnUpdateElementsData;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.OnUpdateElementsEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatetleevent.UpdateTLEEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatetleevent.UpdateTLEEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onupdateelementsevent.OnUpdateElementsData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onupdateelementsevent.OnUpdateElementsEvent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.components.SatelliteAnnotationsComponent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.components.SatelliteGraphicsComponent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.components.SatelliteMotionComponent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.components.SatelliteOrbitGraphicsComponent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.events.OnOrbitUpdateEvent;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnUpdateStateVectorEvent;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnUpdateStateVectorEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEventData;
 
 import java.util.List;
 
@@ -68,6 +71,17 @@ public class Satellite extends Entity {
             getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
         }
     }
+
+    @Subscribe
+    public void handleTLEUpdate(UpdateTLEEvent event) {
+        UpdateTLEEventData data = event.getData();
+        if(data.getSatellite() == this) {
+            SimpleTwoLineElementSet set = data.getSet();
+            getOrbit().setTLE(set);
+            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
+        }
+    }
+    
     public StateVectors getStateVectors(float t) {
         return satOrbit.calculateStateVectors(t);
     }

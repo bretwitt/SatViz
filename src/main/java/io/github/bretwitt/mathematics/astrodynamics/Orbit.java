@@ -3,6 +3,8 @@ package io.github.bretwitt.mathematics.astrodynamics;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.SatViz;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
 
 public class Orbit {
 
@@ -26,6 +28,11 @@ public class Orbit {
         updateOrbit();
     }
 
+    public void setTLE(SimpleTwoLineElementSet set) {
+        this.elements = calculateElements(set);
+        updateOrbit();
+    }
+
     public void setVectors(StateVectors vectors) {
         elements = calculateElements(vectors);
         updateOrbit();
@@ -40,6 +47,10 @@ public class Orbit {
         Vector3f position = vectors.getPosition();
         Vector3f velocity = vectors.getVelocity();
         return OrbitGeometryUtils.calculateElements(position,velocity);
+    }
+
+    private ClassicalOrbitalElements calculateElements(SimpleTwoLineElementSet set) {
+        return OrbitGeometryUtils.calculateElements(set);
     }
     
     public ClassicalOrbitalElements getOrbitalElements() {

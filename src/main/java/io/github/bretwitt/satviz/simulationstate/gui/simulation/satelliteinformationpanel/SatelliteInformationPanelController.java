@@ -3,8 +3,9 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.satelliteinform
 import com.google.common.eventbus.Subscribe;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
+import io.github.bretwitt.mathematics.UnitConversionUtils;
 import io.github.bretwitt.satviz.simulationstate.SimulationState;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.PickedSatelliteListViewGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.pickedsatellitelistviewguievent.PickedSatelliteListViewGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
@@ -60,12 +61,13 @@ public class SatelliteInformationPanelController extends GUIController {
         float e = satellite.getOrbit().getOrbitalElements().getE();
         float i = satellite.getOrbit().getOrbitalElements().getI();
         float raan = satellite.getOrbit().getOrbitalElements().getRAAN();
+        float aop = satellite.getOrbit().getOrbitalElements().getAoP();
         float tae = satellite.getOrbit().getOrbitalElements().getTAE();
 
         String position = "Position: " + roundFloat(positionVector.x,2) + "I " + roundFloat(positionVector.y,2) + "J " + roundFloat(positionVector.z,2)+"K (r=" + roundFloat(positionVector.length(),2) + ")  [DU Earth]";
         String velocity = "Velocity: " + roundFloat(velocityVector.x,2) + "I " + roundFloat(velocityVector.y,2) + "J " + roundFloat(velocityVector.z,2)+"K (v=" + roundFloat(velocityVector.length(),2) + ") [DU/TU Earth]";
         String trueAnomaly = "TA: " + roundFloat(ta,2) + " rad";
-        String period = "Period " + roundFloat(p,2) + " TU";
+        String period = "Period " + roundFloat(p,2) + " TU (" + p * UnitConversionUtils.TUToDays + " hrs)";
         String time = "Time " + roundFloat(t,5) + " TU";
         String h = "h " + satellite.getOrbit().getSpecificAngularMomentum();
         String parameter = "p " + satellite.getOrbit().getOrbitalElements().getP();
@@ -77,7 +79,8 @@ public class SatelliteInformationPanelController extends GUIController {
         String semiMajorAxis = "a " + a;
         String eccentricity = "e " + e;
         String inclination = "i " + i;
-        String latitudeOfAscendingNode = "raan " + raan;
+        String argumentOfPerigee = "ω" + aop;
+        String longitudeOfAscendingNode = "Ω " + raan;
         String timeAtEpoch = "t0 " + tae;
 
         satelliteTreeView.setRoot(new TreeItem<>(satellite.getName()));
@@ -102,7 +105,7 @@ public class SatelliteInformationPanelController extends GUIController {
 
         satelliteTreeView.getTreeItem(0).getChildren().get(0).getChildren().get(0).getChildren().addAll(
                 createTreeItem(semiMajorAxis),createTreeItem(eccentricity),
-                createTreeItem(inclination),createTreeItem(latitudeOfAscendingNode),
+                createTreeItem(inclination),createTreeItem(longitudeOfAscendingNode),
                 createTreeItem(timeAtEpoch)
         );
 

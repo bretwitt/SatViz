@@ -3,9 +3,9 @@ package io.github.bretwitt.satviz.simulationstate;
 import com.google.common.eventbus.Subscribe;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
-import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.Orbit;
-import io.github.bretwitt.satviz.simulationstate.stateevents.OnRemoveSatelliteEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.SimulationGUI;
 import io.github.bretwitt.satviz.simulationstate.objects.camera.PlanetOrbitCamera;
@@ -42,7 +42,7 @@ public class SimulationState extends AppState {
 
     @Override
     public void stateUpdate(float tpf) {
-        simulationTime += (tpf / 801.866f) * satViz.getTimeScale();
+        simulationTime += tpf * 0.0012f * satViz.getTimeScale();
     }
 
     public float getSimulationTime() {
@@ -58,7 +58,7 @@ public class SimulationState extends AppState {
     @Subscribe
     public void onAddSatelliteEvent(OnAddSatelliteEvent addSatelliteEvent) {
         String name = addSatelliteEvent.getData().getName();
-        ClassicalOrbitalElements elements = new ClassicalOrbitalElements(1.06f,0,0,0,0);
+        ClassicalOrbitalElements elements = new ClassicalOrbitalElements(1.06f,0,0,0,0, 0);
         Orbit orbit = new Orbit(elements);
         Satellite satellite = new Satellite(name,orbit,satViz);
         addSatellite(satellite);

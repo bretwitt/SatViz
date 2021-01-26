@@ -3,10 +3,21 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolb
 import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
-import io.github.bretwitt.mathematics.astrodynamics.ClassicalOrbitalElements;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.UpdateElementsGUIEvent;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.UpdateElementsGUIEventData;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
+import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onaddsatelliteguievent.OnAddSatelliteGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onaddsatelliteguievent.OnAddSatelliteGUIEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdateGUIEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdatedGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.pickedsatellitelistviewguievent.PickedSatelliteListViewGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.pickedsatellitelistviewguievent.PickedSatelliteListViewGUIEventData;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.*;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -50,7 +61,28 @@ public class SimulationToolbarController extends GUIController {
     private TextField newElementRaan;
 
     @FXML
+    private TextField newElementAoP;
+
+    @FXML
     private TextField newElementTae;
+
+    @FXML
+    private TextField tleEccentricity;
+
+    @FXML
+    private TextField tleInclination;
+
+    @FXML
+    private TextField tleRaan;
+
+    @FXML
+    private TextField tleAop;
+
+    @FXML
+    private TextField tleMeanMotion;
+
+    @FXML
+    private TextField tleMeanAnomaly;
 
     @FXML
     private TitledPane addSatellitePopup;
@@ -107,12 +139,27 @@ public class SimulationToolbarController extends GUIController {
         float e = getFieldAsFloat(newElementEccentricity);
         float i =  getFieldAsFloat(newElementInclination);
         float raan = getFieldAsFloat(newElementRaan);
+        float aop = getFieldAsFloat(newElementAoP);
         float tae = getFieldAsFloat(newElementTae);
 
-        ClassicalOrbitalElements elements = new ClassicalOrbitalElements(a,e,i,raan,tae);
+        ClassicalOrbitalElements elements = new ClassicalOrbitalElements(a,e,i,raan,aop,tae);
         Satellite satellite = satelliteListView.getSelectionModel().getSelectedItem();
 
         JavaFxUI.getInstance().runInJmeThread(() -> getGuiEventBus().post(new UpdateElementsGUIEvent(new UpdateElementsGUIEventData(satellite, elements))));
+    }
+
+    public void updateTLEElementsClicked() {
+        float e = getFieldAsFloat(tleEccentricity);
+        float i = getFieldAsFloat(tleInclination);
+        float raan = getFieldAsFloat(tleRaan);
+        float aop = getFieldAsFloat(tleAop);
+        float n = getFieldAsFloat(tleMeanMotion);
+        float MA = getFieldAsFloat(tleMeanAnomaly);
+
+        SimpleTwoLineElementSet tle = new SimpleTwoLineElementSet(e,i,raan,aop,n,MA);
+        Satellite satellite = satelliteListView.getSelectionModel().getSelectedItem();
+        JavaFxUI.getInstance().runInJmeThread(() -> getGuiEventBus().post(new UpdateTLEGUIEvent(new UpdateTLEGUIEventData(satellite, tle))));
+
     }
 
     private float getFieldAsFloat(TextField field) {

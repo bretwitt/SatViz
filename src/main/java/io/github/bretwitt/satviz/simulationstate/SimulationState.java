@@ -5,6 +5,7 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.Orbit;
+import io.github.bretwitt.satviz.simulationstate.objects.time.Time;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.SimulationGUI;
@@ -13,15 +14,22 @@ import io.github.bretwitt.satviz.simulationstate.objects.earth.Earth;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onsimulationpauseevent.OnSimulationPauseEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onsimulationpauseevent.SimulationPauseEventData;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.bretwitt.mathematics.UnitConversionUtils.SecToTU;
+
 public class SimulationState extends AppState {
 
     float simulationTime;
+    boolean isPaused;
+    Time time;
     SatViz satViz;
     List<Satellite> satelliteList;
+    private float timeScale;
 
     @Override
     public void initializeState() {
@@ -31,22 +39,32 @@ public class SimulationState extends AppState {
     }
 
     private void initializeEntities() {
+        time = new Time(satViz, getStateEventBus());
         Earth earth = new Earth(satViz);
         PlanetOrbitCamera camera = new PlanetOrbitCamera(earth,satViz);
         SimulationGUI stateGui = new SimulationGUI(satViz, getStateEventBus());
 
+        addEntity(time);
         addEntity(earth);
         addEntity(stateGui);
         addEntity(camera);
     }
 
-    @Override
-    public void stateUpdate(float tpf) {
-        simulationTime += tpf * 0.0012f * satViz.getTimeScale();
+
+    private void addSatellite(Satellite satellite) {
+        addEntity(satellite);
+        satelliteList.add(satellite);
+        getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
+    }
+
+    private void removeSatellite(Satellite satellite) {
+        removeEntity(satellite);
+        satelliteList.remove(satellite);
+        getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
     }
 
     public float getSimulationTime() {
-        return simulationTime;
+        return time.getSimulationTime();
     }
 
     @Subscribe
@@ -64,15 +82,10 @@ public class SimulationState extends AppState {
         addSatellite(satellite);
     }
 
-    private void addSatellite(Satellite satellite) {
-        addEntity(satellite);
-        satelliteList.add(satellite);
-        getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
-    }
-
-    private void removeSatellite(Satellite satellite) {
-        removeEntity(satellite);
-        satelliteList.remove(satellite);
-        getStateEventBus().post(new OnSatelliteListUpdateEvent(new OnSatelliteListUpdateEventData(satelliteList)));
+    @Subscribe
+    public void onSimulationPauseEvent(OnSimulationPauseEvent simulationPauseEvent) {
+        SimulationPauseEventData data = simulationPauseEvent.getData();
+        boolean paused = data.isPaused();
+        time.setPaused(paused);
     }
 }

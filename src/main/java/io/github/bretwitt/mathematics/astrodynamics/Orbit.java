@@ -10,37 +10,33 @@ public class Orbit {
 
     private ClassicalOrbitalElements elements;
     private Vector3f[] orbitCoordinates;
-    private StateVectors stateVectors;
-    private int sampling = 200;
 
-    public Orbit(ClassicalOrbitalElements classicalOrbitalElements, SatViz satViz) {
+    private final int SAMPLING = 200;
+    private final float KEPLER_TOLERANCE = 0.0001f;
+
+
+    public Orbit(ClassicalOrbitalElements classicalOrbitalElements) {
         elements = classicalOrbitalElements;
         calculateGeocentricCoordinates();
     }
 
-    public Orbit(ClassicalOrbitalElements coe) {
-        elements = coe;
-        calculateGeocentricCoordinates();
-    }
-
-    public void setElements(ClassicalOrbitalElements elements) {
+    public void updateElements(ClassicalOrbitalElements elements) {
         this.elements = elements;
         updateOrbit();
     }
 
-    public void setTLE(SimpleTwoLineElementSet set) {
+    public void updateTLE(SimpleTwoLineElementSet set) {
         this.elements = calculateElements(set);
         updateOrbit();
     }
 
-    public void setVectors(StateVectors vectors) {
+    public void updateVectors(StateVectors vectors) {
         elements = calculateElements(vectors);
         updateOrbit();
     }
 
     private void updateOrbit() {
         orbitCoordinates = calculateGeocentricCoordinates();
-        stateVectors = null;
     }
 
     private ClassicalOrbitalElements calculateElements(StateVectors vectors) {
@@ -66,10 +62,7 @@ public class Orbit {
     }
 
     public StateVectors calculateStateVectors(float t) {
-        if(stateVectors == null) {
-            return OrbitGeometryUtils.calculateStateVectors(elements,getPeriod(),t);
-        }
-        return stateVectors;
+        return OrbitGeometryUtils.calculateStateVectors(elements,getPeriod(),t);
     }
 
     public Vector3f[] getGeocentricCoordinates() {
@@ -85,8 +78,7 @@ public class Orbit {
         float v = stateVectors.getVelocity().length();
         float h = getSpecificAngularMomentum();
 
-        float flightAngle = FastMath.acos(h/r*v);
-        return flightAngle;
+        return FastMath.acos(h/r*v);
     }
 
     public float getEnergy() {
@@ -94,11 +86,11 @@ public class Orbit {
     }
 
     private Vector3f[] calculateGeocentricCoordinates() {
-        return OrbitGeometryUtils.getOrbitPointsCartesianGeocentric(elements, sampling);
+        return OrbitGeometryUtils.getOrbitPointsCartesianGeocentric(elements, SAMPLING);
     }
 
     public float getTrueAnomalyAtTime(float t) {
-        return OrbitGeometryUtils.getTrueAnomalyAtTime(elements, getPeriod(), t);
+        return OrbitGeometryUtils.getTrueAnomalyAtTime(elements, getPeriod(), t, KEPLER_TOLERANCE);
     }
 
     public Vector3f getVectorGeocentricAtTrueAnomaly(float taRadians) {
@@ -109,13 +101,12 @@ public class Orbit {
         return OrbitGeometryUtils.getPeriapsis(elements);
     }
 
-
     public float getApoapsis() {
         return OrbitGeometryUtils.getApoapsis(elements);
     }
 
     public int getSample() {
-        return sampling;
+        return SAMPLING;
     }
 
 }

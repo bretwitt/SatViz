@@ -4,8 +4,8 @@ import com.jme3.math.Vector3f;
 
 public class StateVectors {
 
-    private Vector3f position;
-    private Vector3f velocity;
+    private final Vector3f position;
+    private final Vector3f velocity;
 
     public StateVectors(Vector3f position, Vector3f velocity) {
         this.position = position;

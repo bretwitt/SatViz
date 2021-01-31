@@ -41,8 +41,4 @@ public class SatelliteGraphicsComponent extends SpatialComponent {
         return sat;
     }
 
-    @Override
-    public void update(float tpf) {
-
-    }
 }

@@ -22,16 +22,6 @@ public class SatelliteMotionComponent extends Component {
         this.orbit = orbit;
     }
 
-    @Subscribe
-    public void updateSpatial(OnSatelliteSpatialInitializedEvent onSatelliteSpatialInitializedEvent) {
-        this.spatial = (Spatial) onSatelliteSpatialInitializedEvent.getData();
-    }
-
-    @Subscribe
-    public void updateOrbit(OnOrbitUpdateEvent onOrbitUpdateEvent) {
-        this.orbit = (Orbit) onOrbitUpdateEvent.getData();
-    }
-
     @Override
     public void update(float tpf) {
         t = ((SimulationState)getAppState()).getSimulationTime();
@@ -45,4 +35,16 @@ public class SatelliteMotionComponent extends Component {
     public Vector3f getPosition() {
         return spatial.getLocalTranslation();
     }
+
+
+    @Subscribe
+    public void updateSpatial(OnSatelliteSpatialInitializedEvent onSatelliteSpatialInitializedEvent) {
+        this.spatial = (Spatial) onSatelliteSpatialInitializedEvent.getData();
+    }
+
+    @Subscribe
+    public void updateOrbit(OnOrbitUpdateEvent onOrbitUpdateEvent) {
+        this.orbit = (Orbit) onOrbitUpdateEvent.getData();
+    }
+
 }

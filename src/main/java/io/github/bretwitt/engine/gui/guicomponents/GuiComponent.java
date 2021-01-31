@@ -5,10 +5,12 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.stateeventbus.StateEventBus;
 import io.github.bretwitt.engine.components.Component;
 import io.github.bretwitt.engine.gui.guicomponents.eventbus.GuiEventBus;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolbar.SimulationToolbarController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.JMetroStyleClass;
+import jfxtras.styles.jmetro.Style;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,16 +39,29 @@ public class GuiComponent extends Component {
         }
     }
 
-
     private Parent loadFXML(URL file) throws IOException {
         FXMLLoader loader = new FXMLLoader(file);
-        AnchorPane parent = loader.load();
+        Parent parent = loader.load();
+        //applyJMetro(parent);
         controller = getController(loader);
-        injectEventBus(controller);
+        if(controller != null) {
+            injectEventBus(controller);
+        }
         return parent;
     }
 
-    public GUIController getController(FXMLLoader loader) {
+    private void applyJMetro(Parent parent) {
+        JMetro metro = new JMetro();
+        metro.setParent(parent);
+        metro.setStyle(Style.DARK);
+    }
+
+    @Override
+    public void update(float tpf) {
+        JavaFxUI.getInstance().runInJavaFxThread(()->controller.update(tpf));
+    }
+
+    public GUIController getController(@NotNull FXMLLoader loader) {
         return loader.getController();
     }
 
@@ -60,13 +75,6 @@ public class GuiComponent extends Component {
 
     public StateEventBus getStateEventBus() {
         return stateEventBus;
-    }
-
-    @Override
-    public void update(float tpf) {
-        if(controller != null) {
-            JavaFxUI.getInstance().runInJavaFxThread(() -> controller.update());
-        }
     }
 
     public SatViz getSatViz() {

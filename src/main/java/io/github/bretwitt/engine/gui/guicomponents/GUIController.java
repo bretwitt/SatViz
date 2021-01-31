@@ -1,11 +1,16 @@
 package io.github.bretwitt.engine.gui.guicomponents;
 
+import com.jayfella.jme.jfx.impl.JmeUpdateLoop;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.gui.guicomponents.eventbus.GuiEventBus;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-public abstract class GUIController {
+import java.util.Objects;
+
+public abstract class GUIController implements JmeUpdateLoop {
 
     private SatViz satViz;
     private GuiEventBus guiEventBus;
@@ -24,10 +29,6 @@ public abstract class GUIController {
         return guiEventBus;
     }
 
-
-    public void update() {
-
-    }
 
     public TreeItem<String> createTreeItem(String label) {
         return new TreeItem<>(label);

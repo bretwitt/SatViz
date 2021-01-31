@@ -51,37 +51,6 @@ public class Satellite extends Entity {
         addComponent(new SatelliteAnnotationsComponent(this,getEventBus(),getSatViz()));
     }
 
-    @Subscribe
-    public void handleStateVectorUpdate(OnUpdateStateVectorEvent event) {
-        OnUpdateStateVectorEventData data = event.getUpdateData();
-        Satellite satellite = data.getSatellite();
-
-        if(satellite == this) {
-            getOrbit().setVectors(data.getStateVectors());
-            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
-        }
-    }
-
-    @Subscribe
-    public void handleElementsUpdate(OnUpdateElementsEvent event) {
-        OnUpdateElementsData data = (OnUpdateElementsData)event.getData();
-        if(data.getSatellite() == this) {
-            ClassicalOrbitalElements elements = data.getElements();
-            getOrbit().setElements(elements);
-            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
-        }
-    }
-
-    @Subscribe
-    public void handleTLEUpdate(UpdateTLEEvent event) {
-        UpdateTLEEventData data = event.getData();
-        if(data.getSatellite() == this) {
-            SimpleTwoLineElementSet set = data.getSet();
-            getOrbit().setTLE(set);
-            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
-        }
-    }
-    
     public StateVectors getStateVectors(float t) {
         return satOrbit.calculateStateVectors(t);
     }
@@ -102,4 +71,37 @@ public class Satellite extends Entity {
     public String toString() {
         return name;
     }
+
+
+    @Subscribe
+    public void handleStateVectorUpdate(OnUpdateStateVectorEvent event) {
+        OnUpdateStateVectorEventData data = event.getUpdateData();
+        Satellite satellite = data.getSatellite();
+
+        if(satellite == this) {
+            getOrbit().updateVectors(data.getStateVectors());
+            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
+        }
+    }
+
+    @Subscribe
+    public void handleElementsUpdate(OnUpdateElementsEvent event) {
+        OnUpdateElementsData data = (OnUpdateElementsData)event.getData();
+        if(data.getSatellite() == this) {
+            ClassicalOrbitalElements elements = data.getElements();
+            getOrbit().updateElements(elements);
+            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
+        }
+    }
+
+    @Subscribe
+    public void handleTLEUpdate(UpdateTLEEvent event) {
+        UpdateTLEEventData data = event.getData();
+        if(data.getSatellite() == this) {
+            SimpleTwoLineElementSet set = data.getSet();
+            getOrbit().updateTLE(set);
+            getEventBus().post(new OnOrbitUpdateEvent(getOrbit()));
+        }
+    }
+
 }

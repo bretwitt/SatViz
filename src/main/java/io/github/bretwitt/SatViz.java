@@ -31,10 +31,6 @@ public class SatViz extends SimpleApplication {
         stateManager.attach(appState);
     }
 
-    public float getTimeScale() {
-        return 806.811f;
-    }
-
     public Node getRootNode() {
         return rootNode;
     }

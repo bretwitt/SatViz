@@ -10,6 +10,7 @@ import io.github.bretwitt.engine.gui.guicomponents.eventbus.GuiEventBus;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
 import io.github.bretwitt.mathematics.astrodynamics.StateVectors;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.addsatellitepopup.AddSatellitePopup;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onaddsatelliteguievent.OnAddSatelliteGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdateGUIEventData;
@@ -21,15 +22,20 @@ import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateele
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatestatevectorguievent.*;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updatetleguievent.UpdateTLEGUIEventData;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.satelliteinformationpanel.SatelliteInformationPanel;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.satelliteinformationpanel.SatelliteInformationPanel;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.satellitelistpanel.SatelliteListPanel;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.timepanel.OnSimulationPauseGUIEvent;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.timepanel.TimeToolbar;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEventData;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.simulationtoolbar.SimulationToolbar;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.simulationtoolbar.SimulationToolbar;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onsatellitelistupdateevent.OnSatelliteListUpdateEventData;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onsimulationpauseevent.OnSimulationPauseEvent;
+import io.github.bretwitt.satviz.simulationstate.stateevents.onsimulationpauseevent.SimulationPauseEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatestatevectorevent.OnUpdateStateVectorEventData;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onupdatetleevent.UpdateTLEEvent;
@@ -45,9 +51,13 @@ public class SimulationGUI extends Entity {
 
     public SimulationGUI(SatViz satViz, StateEventBus stateEventBus) {
         super(satViz);
-        guiNode = getSatViz().getGuiNode();
+        this.guiNode = getSatViz().getGuiNode();
         this.stateEventBus = stateEventBus;
         this.guiEventBus = new GuiEventBus();
+        registerEvents();
+    }
+
+    private void registerEvents() {
         guiEventBus.register(this);
         stateEventBus.register(this);
     }
@@ -56,8 +66,16 @@ public class SimulationGUI extends Entity {
     public void onEntityInitialize() {
         SimulationToolbar panel = new SimulationToolbar(guiEventBus,stateEventBus,getSatViz());
         SatelliteInformationPanel informationPanel = new SatelliteInformationPanel(guiEventBus,stateEventBus,getSatViz());
+        SatelliteListPanel satelliteListPanel = new SatelliteListPanel(guiEventBus,stateEventBus,getSatViz());
+        TimeToolbar timeToolbar = new TimeToolbar(guiEventBus,stateEventBus,getSatViz());
+        AddSatellitePopup popup = new AddSatellitePopup(guiEventBus,stateEventBus,getSatViz());
+
         addComponent(informationPanel);
         addComponent(panel);
+        addComponent(satelliteListPanel);
+        addComponent(popup);
+        addComponent(timeToolbar);
+
     }
 
     @Subscribe
@@ -86,6 +104,11 @@ public class SimulationGUI extends Entity {
                 new OnUpdateElementsData(satellite,elements)));
     }
 
+    @Subscribe
+    public void onSimulationPauseResumeEvent(OnSimulationPauseGUIEvent event) {
+        boolean isPaused = event.getData().isPaused();
+        stateEventBus.post(new OnSimulationPauseEvent(new SimulationPauseEventData(isPaused)));
+    }
 
     @Subscribe
     public void onAddSatelliteEvent(OnAddSatelliteGUIEvent event) {

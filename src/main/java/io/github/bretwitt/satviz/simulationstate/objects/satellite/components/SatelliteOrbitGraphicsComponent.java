@@ -30,11 +30,6 @@
         refreshOrbitSpatial();
     }
 
-    @Subscribe
-    public void onOrbitUpdateEvent(OnOrbitUpdateEvent event) {
-        updateOrbit((Orbit)event.getData());
-    }
-
     public void updateOrbit(Orbit orbit) {
         this.orbit = orbit;
         refreshOrbitSpatial();
@@ -47,7 +42,6 @@
     @Override
     public void onDisable() {
         updateSpatial(null);
-        //getEventBus().unregister(this);
     }
 
     private Spatial generateOrbitalSpatial(Orbit orbit) {
@@ -100,4 +94,10 @@
         }
         return indexBuffer;
     }
-}
+
+        @Subscribe
+        public void onOrbitUpdateEvent(OnOrbitUpdateEvent event) {
+            updateOrbit((Orbit)event.getData());
+        }
+
+    }

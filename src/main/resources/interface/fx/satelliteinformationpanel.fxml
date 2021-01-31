@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.bretwitt.satviz.simulationstate.gui.simulation.components.satelliteinformationpanel.SatelliteInformationPanelController">
+   <children>
+      <TitledPane fx:id="satelliteInformationPane" animated="false" collapsible="false" layoutX="20.0" layoutY="100.0" prefHeight="870.0" prefWidth="296.0" text="Satellite Data">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="920.0" prefWidth="330.0">
+               <children>
+                  <TreeView fx:id="satelliteTreeView" prefHeight="844.0" prefWidth="330.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

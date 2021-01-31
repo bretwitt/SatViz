@@ -1,23 +1,33 @@
 package io.github.bretwitt.satviz.simulationstate.objects.camera;
 
+import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.FastMath;
+import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.CameraNode;
+import com.jme3.scene.Node;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.entities.Entity;
 import io.github.bretwitt.mathematics.GeometryUtils;
 import io.github.bretwitt.satviz.simulationstate.objects.earth.Earth;
 
+import javax.swing.event.MouseInputListener;
+import java.util.Vector;
+
 public class PlanetOrbitCamera extends Entity implements AnalogListener {
 
     Earth planet;
-    Vector3f position;
     Camera camera;
-    float deltaZAngle;
-    float deltaYAngle;
+    float pitch;
+    float yaw;
+    float zoom;
 
     public PlanetOrbitCamera(Earth e, SatViz satViz) {
         super(satViz);
@@ -31,9 +41,10 @@ public class PlanetOrbitCamera extends Entity implements AnalogListener {
     }
 
     private void setupCamera() {
-        camera = getSatViz().getCamera();
         getSatViz().getFlyByCamera().setEnabled(false);
-        camera.setLocation(new Vector3f(-6,6,3));
+        camera = getSatViz().getCamera();
+
+        camera.setLocation(new Vector3f(20,0,0));
     }
 
 
@@ -41,8 +52,8 @@ public class PlanetOrbitCamera extends Entity implements AnalogListener {
     public void onEntityUpdate(float tpf) {
         updateCameraPosition();
         updateCameraRotation();
-        deltaZAngle = 0;
-        deltaYAngle = 0;
+        pitch = 0;
+        yaw = 0;
     }
 
 
@@ -65,14 +76,14 @@ public class PlanetOrbitCamera extends Entity implements AnalogListener {
     @Override
     public void onAnalog(String name, float v, float tpf) {
         if(name.equals("Camera Rotate Left")) {
-            deltaZAngle -= 2f * tpf;
+            yaw -= 2f * tpf;
         } else if (name.equals("Camera Rotate Right")) {
-            deltaZAngle += 2f * tpf;
+            yaw += 2f * tpf;
         }
         if(name.equals("Camera Rotate Up")) {
-            deltaYAngle += 2f * tpf;
+            pitch += 2f * tpf;
         } else if(name.equals("Camera Rotate Down")) {
-            deltaYAngle -= 2f* tpf;
+            pitch -= 2f* tpf;
         }
     }
 
@@ -81,26 +92,20 @@ public class PlanetOrbitCamera extends Entity implements AnalogListener {
     }
 
     public void updateCameraPosition() {
-        Vector3f cameraPos = getCameraPosition();
-        cameraPos = turnVectorZ(cameraPos,deltaZAngle);
-        cameraPos = turnVectorY(cameraPos,deltaYAngle);
-        camera.setLocation(cameraPos);
+        Vector3f cameraPosition = rotateCamera(pitch,yaw,camera.getLocation());
+        camera.setLocation(cameraPosition);
     }
 
     public void updateCameraRotation() {
         camera.lookAt(planet.getSpatialComponent().getSpatial().getLocalTranslation(), Vector3f.UNIT_Z);
     }
 
-    private Vector3f turnVectorX(Vector3f vector, float angle) {
-        return GeometryUtils.getXRotationMatrix(angle).mult(vector);
+    private Vector3f rotateCamera(float pitch, float yaw, Vector3f original) {
+        return pitchYawRotMatrix(pitch,yaw).mult(original);
     }
 
-    private Vector3f turnVectorY(Vector3f vector, float angle) {
-        return GeometryUtils.getYRotationMatrix(angle).mult(vector);
-    }
-
-    private Vector3f turnVectorZ(Vector3f vector, float angle) {
-        return GeometryUtils.getZRotationMatrix(angle).mult(vector);
+    private Matrix3f pitchYawRotMatrix(float pitch, float yaw) {
+        return GeometryUtils.getYRotationMatrix(pitch).mult(GeometryUtils.getZRotationMatrix(yaw));
     }
 
 

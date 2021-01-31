@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.jayfella.jme.jfx.JavaFxUI;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
+import io.github.bretwitt.engine.events.Event;
 
 public abstract class Component {
 

@@ -3,6 +3,7 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.sate
 import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
+import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.addsatellitepopup.AddSatellitePopup;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdatedGUIEvent;
@@ -36,6 +37,7 @@ public class SatelliteListPanelController extends GUIController {
 
     @FXML
     public Button removeSatelliteButton;
+    private Node node;
 
     public void initialize() {
         parent.setLayoutX(1580);
@@ -90,27 +92,25 @@ public class SatelliteListPanelController extends GUIController {
     }
 
     private void openAddPopup() {
-        Node node = JavaFxUI.getInstance().getChild("addSatellitePopup");
-        node.setVisible(true);
-        JavaFxUI.getInstance().showDialog(node);
+        getAddSatellitePopupNode().setVisible(true);
+        JavaFxUI.getInstance().showDialog(getAddSatellitePopupNode());
     }
 
     private void pickedSatellite(Satellite satellite) {
         getGuiEventBus().post(new OnSatellitesSelectedGUIEvent(new OnSatellitesSelectedGUIEventData(Collections.singletonList(satellite))));
     }
 
-    public void addSatelliteToList(Satellite satellite) {
-        satelliteListView.getItems().add(satellite);
-    }
-
-    public void removeSatelliteFromList(Satellite satellite) {
-        satelliteListView.getItems().remove(satellite);
-    }
-
     @Subscribe
     public void refreshSatelliteList(OnSatelliteListUpdatedGUIEvent event) {
         List<Satellite> satellites = ((event.getData())).getSatelliteList();
         satelliteListView.getItems().setAll(satellites);
+    }
+
+    private Node getAddSatellitePopupNode (){
+        if(node == null) {
+            node = JavaFxUI.getInstance().getChild("addSatellitePopup");
+        }
+        return node;
     }
 
     @Override

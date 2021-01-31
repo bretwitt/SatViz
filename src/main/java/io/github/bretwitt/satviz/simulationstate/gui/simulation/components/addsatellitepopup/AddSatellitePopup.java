@@ -17,4 +17,8 @@ public class AddSatellitePopup extends GuiComponent {
         URL url = getClass().getClassLoader().getResource("interface/fx/addsatellitepopup.fxml");
         loadFromFXML(url);
     }
+
+    @Override
+    public void update(float tpf) {
+    }
 }

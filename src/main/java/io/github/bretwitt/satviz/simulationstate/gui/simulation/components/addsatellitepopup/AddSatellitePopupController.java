@@ -39,12 +39,11 @@ public class AddSatellitePopupController extends GUIController {
     }
 
     private void closePopup() {
-        JavaFxUI.getInstance().runInJmeThread(()->
+        JavaFxUI.getInstance().runInJavaFxThread(()->
                 JavaFxUI.getInstance().removeDialog());
     }
 
     @Override
     public void update(float v) {
-
     }
 }

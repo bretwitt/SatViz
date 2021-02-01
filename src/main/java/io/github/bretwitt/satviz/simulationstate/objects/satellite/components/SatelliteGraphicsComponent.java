@@ -27,11 +27,11 @@ public class SatelliteGraphicsComponent extends SpatialComponent {
     }
 
     private Spatial generateSpatial() {
-        Spatial sat = getSatViz().getAssetManager().loadModel("/models/MRO1/MRO1.j3o");
+        Spatial sat = getSatViz().getAssetManager().loadModel("/3d/MRO1/MRO1.j3o");
         sat.setLocalScale(0.1f);
         Material mat = new Material(getSatViz().getAssetManager(),  // Create new material and...
                 "Common/MatDefs/Misc/Unshaded.j3md");// ... specify .j3md file to use (illuminated).
-        Texture text = getSatViz().getAssetManager().loadTexture("/models/MRO1/MRO_UV.png");
+        Texture text = getSatViz().getAssetManager().loadTexture("/3d/MRO1/MRO_UV.png");
         mat.setTexture("ColorMap", text);
         sat.setMaterial(mat);
 

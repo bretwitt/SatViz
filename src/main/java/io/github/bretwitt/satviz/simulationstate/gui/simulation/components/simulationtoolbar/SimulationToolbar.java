@@ -13,7 +13,7 @@ public class SimulationToolbar extends GuiComponent {
 
     @Override
     public void onEnable() {
-        loadFromFXML(getClass().getClassLoader().getResource("interface/fx/simulationtoolbar.fxml"));
+        loadFromFXML(getClass().getClassLoader().getResource("ui/fxml/simulationtoolbar.fxml"));
     }
 
 }

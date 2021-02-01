@@ -14,7 +14,7 @@ public class TimeToolbar extends GuiComponent {
 
     @Override
     public void onEnable() {
-        URL url = getClass().getClassLoader().getResource("interface/fx/time.fxml");
+        URL url = getClass().getClassLoader().getResource("ui/fxml/time.fxml");
         loadFromFXML(url);
     }
 }

@@ -3,7 +3,6 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.sate
 import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.components.addsatellitepopup.AddSatellitePopup;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onremovesatelliteguievent.OnRemoveSatelliteGUIEventData;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitelistupdatedguievent.OnSatelliteListUpdatedGUIEvent;
@@ -52,9 +51,9 @@ public class SatelliteListPanelController extends GUIController {
 
     private void setupButtonGfx() {
 
-        Image addImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/plus.png")).toString());
-        Image removeImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/minus.png")).toString());
-        Image satelliteImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/satellite.png").toString()));
+        Image addImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/plus.png")).toString());
+        Image removeImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/minus.png")).toString());
+        Image satelliteImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/satellite.png").toString()));
 
         ImageView add = new ImageView(addImage);
         add.setFitWidth(15);

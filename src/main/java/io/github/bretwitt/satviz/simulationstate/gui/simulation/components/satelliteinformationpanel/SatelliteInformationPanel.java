@@ -13,7 +13,7 @@ public class SatelliteInformationPanel extends GuiComponent {
 
     @Override
     public void onEnable() {
-        loadFromFXML(getClass().getClassLoader().getResource("interface/fx/satelliteinformationpanel.fxml"));
+        loadFromFXML(getClass().getClassLoader().getResource("ui/fxml/satelliteinformationpanel.fxml"));
     }
 
 }

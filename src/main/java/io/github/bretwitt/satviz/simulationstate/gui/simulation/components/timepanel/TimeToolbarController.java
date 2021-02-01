@@ -52,11 +52,11 @@ public class TimeToolbarController extends GUIController {
 
     private void setupIcons() {
 
-        Image clockImage = new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/clock.png")).toString()));
-        Image pauseImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/pause.png")).toString());
-        Image playImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/caret.png")).toString());
-        Image fastForwardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/chevron_right.png")).toString());
-        Image fastBackwardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/chevron_left.png")).toString());
+        Image clockImage = new Image(Objects.requireNonNull(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/clock.png")).toString()));
+        Image pauseImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/pause.png")).toString());
+        Image playImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/caret.png")).toString());
+        Image fastForwardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/chevron_right.png")).toString());
+        Image fastBackwardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/chevron_left.png")).toString());
 
         play = new ImageView(playImage);
         play.setFitHeight(15);

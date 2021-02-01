@@ -21,7 +21,7 @@ public class EarthGraphicsComponent extends SpatialComponent {
         Spatial s = new Geometry("Sphere",sphere);
         Material mat = new Material(getSatViz().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor( "Color", ColorRGBA.White);
-        mat.setTexture("ColorMap",getSatViz().getAssetManager().loadTexture("textures/earth.jpg"));
+        mat.setTexture("ColorMap",getSatViz().getAssetManager().loadTexture("3d/textures/earth.jpg"));
         s.setMaterial(mat);
         return s;
     }

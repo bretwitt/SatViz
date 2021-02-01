@@ -14,7 +14,7 @@ import static io.github.bretwitt.mathematics.UnitConversionUtils.SecToTU;
 
 public class Time extends Entity {
 
-    private boolean isPaused;
+    private boolean isPaused = true;
     private float simulationTime;
     private float timeScale = 806.11f;
 

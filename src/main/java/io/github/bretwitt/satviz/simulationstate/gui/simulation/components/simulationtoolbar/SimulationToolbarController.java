@@ -93,7 +93,7 @@ public class SimulationToolbarController extends GUIController {
     }
 
     public void setupIcons() {
-        Image satelliteSettingsImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/satellitesettings.png")).toString());
+        Image satelliteSettingsImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/satellitesettings.png")).toString());
 
         ImageView satelliteSettings = new ImageView(satelliteSettingsImage);
         satelliteSettings.setFitWidth(15);

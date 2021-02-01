@@ -6,7 +6,6 @@ import io.github.bretwitt.engine.gui.guicomponents.GUIController;
 import io.github.bretwitt.mathematics.UnitConversionUtils;
 import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitesselectedevent.OnSatellitesSelectedGUIEvent;
-import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.pickedsatellitelistviewguievent.PickedSatelliteListViewGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.fxml.FXML;
 import javafx.scene.control.TitledPane;
@@ -33,7 +32,7 @@ public class SatelliteInformationPanelController extends GUIController {
     }
 
     public void setupIcons() {
-        Image satelliteSettingsImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("interface/graphics/satellitephysics.png")).toString());
+        Image satelliteSettingsImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("ui/graphics/satellitephysics.png")).toString());
 
         ImageView satelliteSettings = new ImageView(satelliteSettingsImage);
         satelliteSettings.setFitWidth(15);

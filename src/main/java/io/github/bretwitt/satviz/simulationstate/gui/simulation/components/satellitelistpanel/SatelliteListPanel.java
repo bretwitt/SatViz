@@ -12,6 +12,6 @@ public class SatelliteListPanel extends GuiComponent {
 
     @Override
     public void onEnable() {
-        loadFromFXML(getClass().getClassLoader().getResource("interface/fx/satellitepanel.fxml"));
+        loadFromFXML(getClass().getClassLoader().getResource("ui/fxml/satellitepanel.fxml"));
     }
 }

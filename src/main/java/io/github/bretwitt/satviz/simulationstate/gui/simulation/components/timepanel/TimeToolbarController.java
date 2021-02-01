@@ -1,7 +1,12 @@
 package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.timepanel;
 
+import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
+import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
+import io.github.bretwitt.mathematics.units.UnitSystem;
+import io.github.bretwitt.mathematics.units.base.time.TimeUnit;
+import io.github.bretwitt.mathematics.units.metric.MetricTimeUnit;
 import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class TimeToolbarController extends GUIController {
@@ -33,6 +39,8 @@ public class TimeToolbarController extends GUIController {
     @FXML
     private Button fastBackwardButton;
 
+    private TimeUnit currentTimeUnit;
+
     private boolean isPaused;
 
     private ImageView play;
@@ -43,6 +51,7 @@ public class TimeToolbarController extends GUIController {
 
     private ImageView fastBackward;
 
+    SimulationState state;
 
     public void initialize() {
         parent.setLayoutX(1580);
@@ -84,14 +93,21 @@ public class TimeToolbarController extends GUIController {
         timeTitledPane.setGraphic(clock);
     }
 
+
     @Override
     public void update(float tpf) {
-        float time = ((SimulationState)getSatViz().getCurrentState()).getSimulationTime();
-        updateSimulationTime(time);
+        float time = getState().getSimulationTime();
+        updateSimulationTime(getUnitSystem().getTimeUnit().fromTU(time));
     }
 
     private void updateSimulationTime(float time) {
-        simulationTime.setText(time + " TU");
+        DecimalFormat df = new DecimalFormat("##");
+
+        String seconds = df.format(time % 60);
+        String minutes = df.format((time / 60) % 60);
+        String hours = df.format((time / 3600) % 24);
+        String days = df.format(Math.floor(time / 86400));
+        simulationTime.setText(days + " d " + hours + " h " + minutes + " m " + seconds + " s ");
     }
 
     public void pauseResumeClicked() {
@@ -102,6 +118,10 @@ public class TimeToolbarController extends GUIController {
             setPauseResumeButtonResumed();
         }
         JavaFxUI.getInstance().runInJavaFxThread(() -> getGuiEventBus().post(new OnSimulationPauseGUIEvent(new SimulationPauseGUIEventData(isPaused))));
+    }
+
+    private UnitSystem getUnitSystem() {
+        return getState().getCurrentUnits();
     }
 
     private void setPauseResumeButtonPaused() {

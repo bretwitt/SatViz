@@ -5,6 +5,8 @@ import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.appstates.AppState;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.Orbit;
+import io.github.bretwitt.mathematics.units.UnitSystem;
+import io.github.bretwitt.mathematics.units.metric.MetricUnits;
 import io.github.bretwitt.satviz.simulationstate.objects.time.Time;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onremovesatelliteevent.OnRemoveSatelliteEvent;
 import io.github.bretwitt.satviz.simulationstate.stateevents.onaddsatelliteevent.OnAddSatelliteEvent;
@@ -20,8 +22,6 @@ import io.github.bretwitt.satviz.simulationstate.stateevents.onsimulationpauseev
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.bretwitt.mathematics.UnitConversionUtils.SecToTU;
-
 public class SimulationState extends AppState {
 
     float simulationTime;
@@ -29,12 +29,13 @@ public class SimulationState extends AppState {
     Time time;
     SatViz satViz;
     List<Satellite> satelliteList;
-    private float timeScale;
+    private UnitSystem currentUnits;
 
     @Override
     public void initializeState() {
         satViz = (SatViz) getApplication();
         satelliteList = new ArrayList<>();
+        currentUnits = new MetricUnits();
         initializeEntities();
     }
 
@@ -50,6 +51,13 @@ public class SimulationState extends AppState {
         addEntity(camera);
     }
 
+    private void initializeUnits() {
+        currentUnits = new MetricUnits();
+    }
+
+    public UnitSystem getCurrentUnits() {
+        return currentUnits;
+    }
 
     private void addSatellite(Satellite satellite) {
         addEntity(satellite);

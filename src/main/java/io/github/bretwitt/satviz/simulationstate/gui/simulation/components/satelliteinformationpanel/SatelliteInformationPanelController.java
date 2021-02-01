@@ -3,7 +3,7 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.sate
 import com.google.common.eventbus.Subscribe;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
-import io.github.bretwitt.mathematics.UnitConversionUtils;
+import io.github.bretwitt.mathematics.units.UnitConversionUtils;
 import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitesselectedevent.OnSatellitesSelectedGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;

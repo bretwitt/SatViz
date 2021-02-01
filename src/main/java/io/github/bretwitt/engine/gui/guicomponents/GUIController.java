@@ -3,6 +3,8 @@ package io.github.bretwitt.engine.gui.guicomponents;
 import com.jayfella.jme.jfx.impl.JmeUpdateLoop;
 import io.github.bretwitt.SatViz;
 import io.github.bretwitt.engine.gui.guicomponents.eventbus.GuiEventBus;
+import io.github.bretwitt.mathematics.units.UnitSystem;
+import io.github.bretwitt.satviz.simulationstate.SimulationState;
 import io.github.bretwitt.satviz.simulationstate.objects.satellite.Satellite;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
@@ -14,6 +16,7 @@ public abstract class GUIController implements JmeUpdateLoop {
 
     private SatViz satViz;
     private GuiEventBus guiEventBus;
+    private SimulationState simulationState;
 
     public void bind(SatViz satViz, GuiEventBus eventBus) {
         this.satViz = satViz;
@@ -23,6 +26,13 @@ public abstract class GUIController implements JmeUpdateLoop {
 
     public SatViz getSatViz() {
         return satViz;
+    }
+
+    public SimulationState getState() {
+        if(simulationState == null) {
+            simulationState = (SimulationState) satViz.getCurrentState();
+        }
+        return simulationState;
     }
 
     public GuiEventBus getGuiEventBus() {

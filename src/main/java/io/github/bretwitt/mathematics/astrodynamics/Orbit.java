@@ -2,9 +2,9 @@ package io.github.bretwitt.mathematics.astrodynamics;
 
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import io.github.bretwitt.SatViz;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
+import io.github.bretwitt.mathematics.units.UnitSystem;
 
 public class Orbit {
 
@@ -12,8 +12,7 @@ public class Orbit {
     private Vector3f[] orbitCoordinates;
 
     private final int SAMPLING = 200;
-    private final float KEPLER_TOLERANCE = 0.0001f;
-
+    private final float KEPLER_CALCULATION_TOLERANCE = 0.0001f;
 
     public Orbit(ClassicalOrbitalElements classicalOrbitalElements) {
         elements = classicalOrbitalElements;
@@ -90,7 +89,7 @@ public class Orbit {
     }
 
     public float getTrueAnomalyAtTime(float t) {
-        return OrbitGeometryUtils.getTrueAnomalyAtTime(elements, getPeriod(), t, KEPLER_TOLERANCE);
+        return OrbitGeometryUtils.getTrueAnomalyAtTime(elements, getPeriod(), t, KEPLER_CALCULATION_TOLERANCE);
     }
 
     public Vector3f getVectorGeocentricAtTrueAnomaly(float taRadians) {

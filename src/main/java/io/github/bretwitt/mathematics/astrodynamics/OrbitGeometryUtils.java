@@ -1,15 +1,13 @@
 package io.github.bretwitt.mathematics.astrodynamics;
 
 import com.jme3.math.FastMath;
-import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.mathematics.GeometryUtils;
-import io.github.bretwitt.mathematics.UnitConversionUtils;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
+import io.github.bretwitt.mathematics.units.UnitConversionUtils;
+import io.github.bretwitt.mathematics.units.UnitSystem;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Vector;
 
 public class OrbitGeometryUtils {
 
@@ -47,12 +45,12 @@ public class OrbitGeometryUtils {
         return orbitPoints;
     }
 
-    public static StateVectors calculateStateVectors(ClassicalOrbitalElements elements, float period, float t) {
+    public static StateVectors calculateStateVectors(ClassicalOrbitalElements elements, float keplerProblemTolerance, float t) {
         float e = elements.getE();
         float a = elements.getA();
 
-        float meanAnomaly = getMeanAnomaly(t,period);
-        float E = calculateKeplersProblem(e, meanAnomaly, 0.001f);
+        float meanAnomaly = getMeanAnomaly(t,getPeriod(a));
+        float E = calculateKeplersProblem(e, meanAnomaly, keplerProblemTolerance);
 
         Vector3f position = calculatePerifocalPositionVector(E,e,a);
         Vector3f velocity = calculatePerifocalVelocityVector(E,e,a);

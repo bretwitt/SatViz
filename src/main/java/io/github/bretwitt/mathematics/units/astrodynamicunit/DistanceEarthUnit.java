@@ -15,6 +15,11 @@ public class DistanceEarthUnit extends DistanceUnit {
     }
 
     @Override
+    public float fromDUE(float due) {
+        return due;
+    }
+
+    @Override
     public float toDUE(float due) {
         return due;
     }

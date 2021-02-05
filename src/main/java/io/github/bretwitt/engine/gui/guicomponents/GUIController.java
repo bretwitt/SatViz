@@ -35,6 +35,10 @@ public abstract class GUIController implements JmeUpdateLoop {
         return simulationState;
     }
 
+    public UnitSystem getCurrentUnitSystem() {
+        return getState().getCurrentUnits();
+    }
+
     public GuiEventBus getGuiEventBus() {
         return guiEventBus;
     }

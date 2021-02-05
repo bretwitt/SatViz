@@ -2,9 +2,11 @@ package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.simu
 
 import com.google.common.eventbus.Subscribe;
 import com.jayfella.jme.jfx.JavaFxUI;
+import com.jme3.math.FastMath;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.ClassicalOrbitalElements;
 import io.github.bretwitt.mathematics.astrodynamics.orbitrepresentations.SimpleTwoLineElementSet;
+import io.github.bretwitt.mathematics.units.UnitConversionUtils;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.onsatellitesselectedevent.OnSatellitesSelectedGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEvent;
 import io.github.bretwitt.satviz.simulationstate.gui.simulation.events.updateelementsguievent.UpdateElementsGUIEventData;
@@ -88,7 +90,7 @@ public class SimulationToolbarController extends GUIController {
 
     public void initialize()
     {
-        pickedSatellites = new ArrayList<Satellite>();
+        pickedSatellites = new ArrayList<>();
         setupIcons();
     }
 
@@ -116,15 +118,17 @@ public class SimulationToolbarController extends GUIController {
     }
 
     public void updateElementsClicked() {
-        float a = getFieldAsFloat(newElementSemiMajorAxis);
+        float a = getCurrentUnitSystem().getDistanceUnit().toDUE(getFieldAsFloat(newElementSemiMajorAxis));
         float e = getFieldAsFloat(newElementEccentricity);
         float i =  getFieldAsFloat(newElementInclination);
-        float raan = getFieldAsFloat(newElementRaan);
-        float aop = getFieldAsFloat(newElementAoP);
-        float tae = getFieldAsFloat(newElementTae);
+        float raan = (getFieldAsFloat(newElementRaan));
+        float aop = (getFieldAsFloat(newElementAoP));
+        float tae = getCurrentUnitSystem().getTimeUnit().toTU(getFieldAsFloat(newElementTae));
 
+        float n = (float) Math.pow(1f / Math.pow(a,3),1/2f);
+        System.out.println(n);
+        System.out.println("a: " + a);
         ClassicalOrbitalElements elements = new ClassicalOrbitalElements(a,e,i,raan,aop,tae);
-
         JavaFxUI.getInstance().runInJmeThread(() -> getGuiEventBus().post(new UpdateElementsGUIEvent(new UpdateElementsGUIEventData(getSatellite(), elements))));
     }
 
@@ -133,8 +137,14 @@ public class SimulationToolbarController extends GUIController {
         float i = getFieldAsFloat(tleInclination);
         float raan = getFieldAsFloat(tleRaan);
         float aop = getFieldAsFloat(tleAop);
-        float n = getFieldAsFloat(tleMeanMotion);
+        float n = getFieldAsFloat(tleMeanMotion) * UnitConversionUtils.DaysToTU;
         float MA = getFieldAsFloat(tleMeanAnomaly);
+
+        float a = (FastMath.pow(1 / (FastMath.pow(n,2)),(float)1/3));
+
+        System.out.println("n: " + n);
+        System.out.println("a: " + a);
+
 
         SimpleTwoLineElementSet tle = new SimpleTwoLineElementSet(e,i,raan,aop,n,MA);
         JavaFxUI.getInstance().runInJmeThread(() -> getGuiEventBus().post(new UpdateTLEGUIEvent(new UpdateTLEGUIEventData(getSatellite(), tle))));

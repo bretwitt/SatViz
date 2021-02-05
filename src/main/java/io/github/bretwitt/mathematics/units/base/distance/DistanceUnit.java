@@ -8,6 +8,8 @@ public abstract class DistanceUnit extends Unit {
 
     public abstract float fromDUE();
 
+    public abstract float fromDUE(float due);
+
     public abstract float toDUE(float due);
 
 }

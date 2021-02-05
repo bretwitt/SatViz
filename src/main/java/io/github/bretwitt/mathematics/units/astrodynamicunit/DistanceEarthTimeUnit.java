@@ -11,6 +11,11 @@ public class DistanceEarthTimeUnit extends TimeUnit {
     }
 
     @Override
+    public float toTU(float value) {
+        return value;
+    }
+
+    @Override
     public float fromTU(float value) {
         return getValue();
     }

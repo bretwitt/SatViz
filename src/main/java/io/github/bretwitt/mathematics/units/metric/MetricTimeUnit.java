@@ -1,6 +1,5 @@
 package io.github.bretwitt.mathematics.units.metric;
 
-import io.github.bretwitt.mathematics.units.Unit;
 import io.github.bretwitt.mathematics.units.UnitConversionUtils;
 import io.github.bretwitt.mathematics.units.base.time.TimeUnit;
 
@@ -28,7 +27,12 @@ public class MetricTimeUnit extends TimeUnit {
 
     @Override
     public float toTU() {
-        return getValue() * UnitConversionUtils.SecToTU;
+        return toTU(getValue());
+    }
+
+    @Override
+    public float toTU(float value) {
+        return value * UnitConversionUtils.SecToTU;
     }
 
     @Override

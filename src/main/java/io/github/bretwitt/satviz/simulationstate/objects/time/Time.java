@@ -13,7 +13,7 @@ public class Time extends Entity {
 
     private boolean isPaused = true;
     private float simulationTime;
-    private float timeScale = 10000;
+    private float timeScale = 1000;
 
     public Time(SatViz satViz, StateEventBus eventBus) {
         super(satViz);

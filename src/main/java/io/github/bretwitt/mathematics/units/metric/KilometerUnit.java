@@ -1,5 +1,6 @@
 package io.github.bretwitt.mathematics.units.metric;
 
+import io.github.bretwitt.mathematics.units.Unit;
 import io.github.bretwitt.mathematics.units.UnitConversionUtils;
 import io.github.bretwitt.mathematics.units.base.distance.DistanceUnit;
 
@@ -16,7 +17,12 @@ public class KilometerUnit extends DistanceUnit {
     }
 
     @Override
+    public float fromDUE(float due) {
+        return due * UnitConversionUtils.DUEtoKM;
+    }
+
+    @Override
     public float toDUE(float due) {
-        return getValue() * UnitConversionUtils.KMtoDUE;
+        return due * UnitConversionUtils.KMtoDUE;
     }
 }

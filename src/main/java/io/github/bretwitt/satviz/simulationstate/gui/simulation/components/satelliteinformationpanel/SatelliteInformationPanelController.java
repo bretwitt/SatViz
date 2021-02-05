@@ -1,6 +1,7 @@
 package io.github.bretwitt.satviz.simulationstate.gui.simulation.components.satelliteinformationpanel;
 
 import com.google.common.eventbus.Subscribe;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import io.github.bretwitt.engine.gui.guicomponents.GUIController;
 import io.github.bretwitt.mathematics.units.UnitConversionUtils;
@@ -62,7 +63,7 @@ public class SatelliteInformationPanelController extends GUIController {
     private void fillOverview(Satellite satellite) {
         SimulationState state = ((SimulationState)getSatViz().getCurrentState());
         float t = state.getSimulationTime();
-        float ta = satellite.getOrbit().getTrueAnomalyAtTime(t);
+        float ta = satellite.getOrbit().getTrueAnomalyAtTime(t) * FastMath.RAD_TO_DEG;
         Vector3f positionVector = satellite.getStateVectors(t).getPosition();
         Vector3f velocityVector = satellite.getStateVectors(t).getVelocity();
 
@@ -74,8 +75,18 @@ public class SatelliteInformationPanelController extends GUIController {
         float aop = satellite.getOrbit().getOrbitalElements().getAoP();
         float tae = satellite.getOrbit().getOrbitalElements().getTAE();
 
-        String position = "Position: " + roundFloat(positionVector.x,2) + "I " + roundFloat(positionVector.y,2) + "J " + roundFloat(positionVector.z,2)+"K (r=" + roundFloat(positionVector.length(),2) + ")  [DU Earth]";
-        String velocity = "Velocity: " + roundFloat(velocityVector.x,2) + "I " + roundFloat(velocityVector.y,2) + "J " + roundFloat(velocityVector.z,2)+"K (v=" + roundFloat(velocityVector.length(),2) + ") [DU/TU Earth]";
+        String position = "Position Vector (km)";
+        String positionI = convertToCurrentDistanceUnit(positionVector.x) + " I";
+        String positionJ = convertToCurrentDistanceUnit(positionVector.y) + " J";
+        String positionK = convertToCurrentDistanceUnit(positionVector.z) + " K";
+        String positionLength = "r = " + convertToCurrentDistanceUnit(positionVector.length());
+
+        String velocity = "Velocity Vector (km / s) ";
+        String velocityI = convertToCurrentSpeedUnit(velocityVector.x) + "I ";
+        String velocityJ = convertToCurrentSpeedUnit(velocityVector.y) + "J ";
+        String velocityK = convertToCurrentSpeedUnit(velocityVector.z) + "K ";
+        String velocityLength = "v = " + convertToCurrentSpeedUnit(velocityVector.length());
+
         String trueAnomaly = "TA: " + roundFloat(ta,2) + " rad";
         String period = "Period " + roundFloat(p,2) + " TU (" + p * UnitConversionUtils.TUToDays + " hrs)";
         String time = "Time " + roundFloat(t,5) + " TU";
@@ -101,7 +112,18 @@ public class SatelliteInformationPanelController extends GUIController {
         );
 
         satelliteTreeView.getTreeItem(0).getChildren().get(1).getChildren().addAll(
-                createTreeItem(position),createTreeItem(velocity),
+                createTreeItem(position), createTreeItem(velocity)
+        );
+
+        satelliteTreeView.getTreeItem(0).getChildren().get(1).getChildren().get(0).getChildren().addAll(
+            createTreeItem(positionI),createTreeItem(positionJ),createTreeItem(positionK), createTreeItem(positionLength)
+        );
+
+        satelliteTreeView.getTreeItem(0).getChildren().get(1).getChildren().get(1).getChildren().addAll(
+                createTreeItem(velocityI),createTreeItem(velocityJ),createTreeItem(velocityK)
+        );
+
+        satelliteTreeView.getTreeItem(0).getChildren().get(1).getChildren().addAll(
                 createTreeItem(trueAnomaly),
                 createTreeItem(flightAngle)
         );
@@ -122,6 +144,18 @@ public class SatelliteInformationPanelController extends GUIController {
 
         satelliteTreeView.getTreeItem(0).getChildren().get(2).getChildren().addAll(createTreeItem(time));
 
+    }
+
+    private float convertToCurrentDistanceUnit(float du) {
+        return getCurrentUnitSystem().getDistanceUnit().fromDUE(du);
+    }
+
+    private float convertToCurrentTimeUnit(float tu) {
+        return getCurrentUnitSystem().getTimeUnit().fromTU(tu);
+    }
+
+    private float convertToCurrentSpeedUnit(float tudu) {
+        return getCurrentUnitSystem().getSpeedUnit().fromTUDU(tudu);
     }
 
     @Override

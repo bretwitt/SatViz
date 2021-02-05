@@ -173,9 +173,8 @@ public class OrbitGeometryUtils {
         float n = set.getN();
         float tae = set.getMA();
 
-        float a = (
-                FastMath.pow(mu / (FastMath.pow(n,2)),(float)1/3)
-        );
+        float a = (FastMath.pow(mu / (FastMath.pow(n,2)),(float)1/3))
+                   * FastMath.pow(FastMath.TWO_PI,-1/3f);
 
         return new ClassicalOrbitalElements(a,e,i,raan,aop,tae);
     }

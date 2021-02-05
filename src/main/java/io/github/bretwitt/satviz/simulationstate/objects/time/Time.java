@@ -29,9 +29,12 @@ public class Time extends Entity {
 
     public void setTimeSetting(int timeSetting) {
         switch (timeSetting) {
-            case 1 -> timeScale = 1;
-            case 2 -> timeScale = 100;
-            case 3 -> timeScale = 10000;
+            case 1:
+                timeScale = 1;
+            case 2:
+                timeScale = 100;
+            case 3:
+                timeScale = 10000;
         }
     }
 
